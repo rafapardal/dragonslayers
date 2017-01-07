@@ -17,9 +17,7 @@ export class AuthenticatedComponent implements OnInit {
   }
 
   checkIfLogged(){
-    if (this.auth.authenticated() === false) {
-      this.router.navigate(['']);
-    }
+    this.auth.authenticated();
   }
 
   logout() {

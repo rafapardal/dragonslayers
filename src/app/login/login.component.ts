@@ -19,17 +19,19 @@ export class LoginComponent implements OnInit {
       password: new FormControl('')
     });
 
-    // Login Form
-    userRegisto = new FormGroup({
-        username: new FormControl(''),
-        password: new FormControl(''),
-        firstName: new FormControl(''),
-        lastName: new FormControl('')
-      });
+  // Login Form
+  userRegisto = new FormGroup({
+      username: new FormControl(''),
+      password: new FormControl(''),
+      firstName: new FormControl(''),
+      lastName: new FormControl('')
+    });
 
   constructor(private http: Http, private auth: AuthService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.auth.authenticated();
+  }
 
   login() {
     this.auth.login( this.userLogin.value.username, this.userLogin.value.password ).subscribe(
@@ -53,8 +55,8 @@ export class LoginComponent implements OnInit {
     };
     this.auth.signUp(user).subscribe(result => {
       if (result.success) {
-        this.userLogin.value.username = user.username;
-        this.userLogin.value.password = user.password;
+        this.userLogin.value.username = result.username;
+        this.userLogin.value.password = result.password;
         this.login();
       } else {
         this.error = result.mensagem;

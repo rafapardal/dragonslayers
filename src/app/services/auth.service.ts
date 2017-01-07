@@ -42,9 +42,12 @@ export class AuthService {
       });
    }
 
-   public authenticated() {
-     if (this.currentUser) return true;
-     return false;
+   public authenticated() : void {
+     if (this.currentUser){
+       this.router.navigate(['/auth']);
+     } else {
+       this.router.navigate(['/login']);
+     }
    }
 
    public getUser(){

@@ -13,11 +13,6 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.auth.authenticated());
-    if (this.auth.authenticated() === true){
-      this.router.navigate(['/auth']);
-    } else {
-      this.router.navigate(['/login']);
-    }
+    this.auth.authenticated();
   }
 }
