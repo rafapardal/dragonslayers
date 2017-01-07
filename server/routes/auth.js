@@ -4,7 +4,7 @@ const user = require('../models/user');
 
 /* Login */
 router.get('/login', (req, res) => {
-  user.login(req.query.username, req.query.password, function(err, result) {
+  user.login( req.query.username, req.query.password, function(err, result ) {
     if (err) throw err;
     res.json(result);
   });
@@ -12,7 +12,10 @@ router.get('/login', (req, res) => {
 
 /* Sign Up */
 router.post('/signup', (req, res) => {
-  user.signUp();
+  user.signUp( req.body, function(err, result ){
+    if (err) throw err;
+    res.json(result);
+  });
 });
 
 module.exports = router;

@@ -12,14 +12,22 @@ exports.login = function(username, password, callback) {
   })
 }
 
-exports.signUp = function(username, password, name, callback) {
-  //receber o username, password e <nome>
-  //comparar se username já existe
-    // se existir
-      // status 404
-      // mensagem de erro
-    // se não existir
-      // status 200 ok
-      // inserir registo
-      // retornar username e password para fazer login
+exports.signUp = function(user, callback) {
+      User.findOne({ 'username': user.username }, function(err, docs) {
+        if(docs) {
+          callback(null, { success: false, mensagem: "Já existe este nome de utilizador" });
+        } else {
+          var newUser = new User({
+            username: user.username,
+            password: user.password,
+            name: {
+              first: user.firstname,
+              last: user.lastname
+            }
+          });
+          newUser.save();
+          callback(null, { success: true, mensagem: "Utilizador criado com sucesso", username: user.username, password: user.password });
+        };
+      })
+
 }
