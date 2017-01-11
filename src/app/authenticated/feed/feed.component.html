@@ -1,0 +1,9 @@
+<div class="container">
+  <div class="row" *ngFor="let post of posts">
+    <div class="card card-block">
+      <h4 class="card-title">{{ post.text }}</h4>
+      <p class="card-text">{{post.achievement.name}}</p>
+      <a href="users/{{post.user.username}}" class="card-link">{{post.user.name.first}} {{post.user.name.last}}</a>
+    </div>
+  </div>
+</div>

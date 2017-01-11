@@ -7,4 +7,4 @@ var AchievementSchema = new Schema({
   description: String
 });
 
-module.exports = mongoose.model('achievement', AchievementSchema);
+module.exports = mongoose.model('Achievement', AchievementSchema);

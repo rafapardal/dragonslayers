@@ -9,9 +9,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AuthenticatedComponent } from './authenticated/authenticated/authenticated.component';
+import { FeedComponent } from './authenticated/feed/feed.component';
 
 // services
 import { AuthService } from './services/auth.service';
+import { FeedService } from './services/feed.service';
 
 // Routes
 const appRoutes: Routes = [
@@ -26,6 +28,10 @@ const appRoutes: Routes = [
   {
     path: 'auth',
     component: AuthenticatedComponent
+  },
+  {
+    path: 'feed',
+    component: FeedComponent
   }
 ];
 
@@ -34,7 +40,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     AuthenticatedComponent,
-    LoginComponent
+    LoginComponent,
+    FeedComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +53,7 @@ const appRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, FeedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
