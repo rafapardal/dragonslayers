@@ -1,16 +1,11 @@
 import { Injectable } from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
-import { Http, Headers, Response, URLSearchParams } from '@angular/http';
-import { Router, CanActivate } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map'
 
 @Injectable()
 export class FeedService {
-  public token: string;
-  public currentUser;
 
-   constructor(private http: Http, private router: Router) {}
+   constructor(private http: Http) {}
 
    public getFeed() {
      return this.http.get('/api/feed/')

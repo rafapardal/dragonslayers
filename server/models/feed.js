@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 exports.getFeed = function( callback ) {
   Feed.find().populate("achievement").populate('user').exec( function( err, docs ) {
-    callback(err, docs);
+    callback(null, docs);
   });
 }
 

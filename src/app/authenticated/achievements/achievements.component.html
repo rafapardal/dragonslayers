@@ -1,3 +1,9 @@
-<p>
-  achievements works!
-</p>
+<div class="row" *ngFor="let achievement of achievementList">
+  <div class="panel panel-default" [class.panel-success]="achievement.done">
+    <div class="panel-heading">{{achievement.result.name}}</div>
+    <div class="panel-body">
+      <p>{{achievement.result.description}}</p>
+      <button type="button" class="btn btn-default">{{achievement.done}}</button>
+    </div>
+  </div>
+</div>

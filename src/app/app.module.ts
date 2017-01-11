@@ -16,6 +16,7 @@ import { ProfileComponent } from './authenticated/profile/profile.component';
 // services
 import { AuthService } from './services/auth.service';
 import { FeedService } from './services/feed.service';
+import { AchievementsService } from './services/achievements.service';
 
 // Routes
 const appRoutes: Routes = [
@@ -62,7 +63,7 @@ const appRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [AuthService, FeedService],
+  providers: [AuthService, FeedService, AchievementsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

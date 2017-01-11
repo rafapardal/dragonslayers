@@ -30,5 +30,10 @@ exports.signUp = function(user, callback) {
           callback(null, { success: true, mensagem: "Utilizador criado com sucesso", username: user.username, password: user.password });
         };
       })
+}
 
+exports.getUserAchievements = function(id, callback) {
+  User.findOne({ '_id': id }, function(err, docs) {
+      callback(null, { achievements: docs.achievements });
+  });
 }

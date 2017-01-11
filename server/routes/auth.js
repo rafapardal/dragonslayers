@@ -18,4 +18,12 @@ router.post('/signup', (req, res) => {
   });
 });
 
+/* get user achievements */
+router.get('/userachievements', (req, res) => {
+  user.getUserAchievements( req.query.id, function(err, result ) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
 module.exports = router;

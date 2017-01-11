@@ -59,6 +59,13 @@ export class AuthService implements CanActivate {
      return this.currentUser.id;
    }
 
+   public getUserAchievements(id){
+     return this.http.get('/api/auth/userachievements', { search: 'id=' + id})
+      .map((response: Response) => {
+        return response.json();
+      });
+   }
+
    public logout() {
      localStorage.removeItem('currentUser');
      this.setUser();
