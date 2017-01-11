@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AuthenticatedComponent } from './authenticated/authenticated/authenticated.component';
 import { FeedComponent } from './authenticated/feed/feed.component';
+import { AchievementsComponent } from './authenticated/achievements/achievements.component';
+import { ProfileComponent } from './authenticated/profile/profile.component';
 
 // services
 import { AuthService } from './services/auth.service';
@@ -19,19 +21,24 @@ import { FeedService } from './services/feed.service';
 const appRoutes: Routes = [
   {
     path: '',
-    component: AppComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'auth',
-    component: AuthenticatedComponent
-  },
-  {
-    path: 'feed',
-    component: FeedComponent
+    component: AppComponent,
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'auth',
+        component: AuthenticatedComponent,
+        canActivate: [AuthService],
+        children: [
+          { path: 'feed', component: FeedComponent },
+          { path: 'achievements', component: AchievementsComponent },
+          { path: 'profile', component: ProfileComponent },
+          { path: '', redirectTo: '/auth/feed', pathMatch: 'full' }
+        ]
+      }
+    ]
   }
 ];
 
@@ -41,7 +48,9 @@ const appRoutes: Routes = [
     AppComponent,
     AuthenticatedComponent,
     LoginComponent,
-    FeedComponent
+    FeedComponent,
+    AchievementsComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

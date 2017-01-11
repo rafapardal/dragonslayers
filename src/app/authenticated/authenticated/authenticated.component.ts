@@ -8,16 +8,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./authenticated.component.css']
 })
 export class AuthenticatedComponent implements OnInit {
-  private test;
 
   constructor ( private router: Router, private auth: AuthService ) {}
 
   ngOnInit() {
-    this.checkIfLogged();
-  }
-
-  checkIfLogged(){
-    this.auth.authenticated();
   }
 
   logout() {

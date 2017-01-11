@@ -6,12 +6,17 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
 @Injectable()
-export class AuthService {
+export class AuthService implements CanActivate {
   public token: string;
   public currentUser;
 
    constructor(private http: Http, private router: Router) {
       this.setUser();
+   }
+
+   public canActivate() {
+     if (this.currentUser) return true;
+     return false;
    }
 
    setUser() {

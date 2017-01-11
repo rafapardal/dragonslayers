@@ -1,6 +1,9 @@
-<h1>login feito</h1>
-<button (click)="logout()">
-  logout
-</button>
-
 <router-outlet></router-outlet>
+
+<footer>
+  <ul class="nav nav-pills nav-justified">
+    <li role="presentation" routerLinkActive="active"><a routerLink="/auth/feed">Feed</a></li>
+    <li role="presentation" routerLinkActive="active"><a routerLink="/auth/achievements">Achievements</a></li>
+    <li role="presentation" routerLinkActive="active"><a routerLink="/auth/profile">Perfil</a></li>
+  </ul>
+</footer>
