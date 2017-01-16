@@ -1,0 +1,19 @@
+.mdl-card {
+  width: 90%;
+  margin: 20px auto;
+}
+
+.mdl-card__title {
+  color: #fff;
+  height: 116px;
+  background-color: #bdc3c7;
+  transition: background-color 0.3s;
+}
+
+.mdl-card__title.active {
+  background-color: #3498db;
+}
+
+.mdl-card__menu {
+  color: #fff;
+}

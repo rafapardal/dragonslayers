@@ -1,9 +1,18 @@
 <div class="container">
   <div class="row" *ngFor="let post of posts">
-    <div class="card card-block">
-      <h4 class="card-title">{{ post.text }}</h4>
-      <p class="card-text">{{post.achievement.name}}</p>
-      <a href="users/{{post.user.username}}" class="card-link">{{post.user.name.first}} {{post.user.name.last}}</a>
+    <div class="mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">{{post.achievement.name}}</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        {{post.user.name.first}} {{post.user.name.last}} {{ post.text }}
+        <p>{{post.createdAt | date:'dd/MM/yy'}} ás {{post.createdAt | date:'HH:mm'}}</p>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+          Ver o(s) {{post.comments.length}} comentário(s)
+        </a>
+      </div>
     </div>
   </div>
 </div>

@@ -5,15 +5,20 @@ const feed = require('../models/feed');
 /* GET feed listing. */
 router.get('/', (req, res) => {
   feed.getFeed( function(err, result) {
-    if (err) throw "erro listar";
     res.json(result);
   });
 });
 
-// New Post
-router.get('/new', (req, res) => {
-  feed.new( function( err, result ) {
-    if (err) throw "erro criar";
+// POST Create Post
+router.post('/createpost', (req, res) => {
+  feed.createPost( req.body, function( err, result ) {
+    res.json(result);
+  });
+});
+
+// POST Delete Post
+router.post('/deletepost', (req, res) => {
+  feed.deletePost( req.body, function( err, result ) {
     res.json(result);
   });
 });

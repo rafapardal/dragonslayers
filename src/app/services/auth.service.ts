@@ -30,6 +30,7 @@ export class AuthService implements CanActivate {
         if(response.json().success) {
           localStorage.setItem('currentUser', JSON.stringify({ id: response.json().id_user, token: response.json().token }));
           this.setUser();
+          localStorage.setItem('refreshed','false');
         }
         return response.json();
       });
@@ -38,11 +39,6 @@ export class AuthService implements CanActivate {
    public signUp(user) {
      return this.http.post('/api/auth/signup', user)
       .map((response: Response) => {
-        if(response.json().success) {
-          localStorage.setItem('currentUser', JSON.stringify({ id: response.json().id_user, token: response.json().token }));
-          this.token = response.json().token;
-          this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        }
         return response.json();
       });
    }

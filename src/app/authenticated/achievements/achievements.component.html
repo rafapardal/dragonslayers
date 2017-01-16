@@ -1,9 +1,20 @@
-<div class="row" *ngFor="let achievement of achievementList">
-  <div class="panel panel-default" [class.panel-success]="achievement.done">
-    <div class="panel-heading">{{achievement.result.name}}</div>
-    <div class="panel-body">
-      <p>{{achievement.result.description}}</p>
-      <button type="button" class="btn btn-default">{{achievement.done}}</button>
+<div *ngFor="let achievement of achievementList; let i = index">
+  <div class="mdl-card mdl-shadow--2dp">
+    <div (click)="changeAchievement(achievement, i)">
+      <div class="mdl-card__title" [class.active]="achievement.done">
+        <h2 class="mdl-card__title-text">{{achievement.result.name}}</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        {{achievement.result.description}}
+      </div>
     </div>
+    <!--querySelectorAll
+    <div class="mdl-card__actions mdl-card--border">
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        Ver os comentários
+      </a>
+    </div>
+  -->
   </div>
+
 </div>

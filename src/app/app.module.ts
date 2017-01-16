@@ -13,13 +13,15 @@ import { FeedComponent } from './authenticated/feed/feed.component';
 import { AchievementsComponent } from './authenticated/achievements/achievements.component';
 import { ProfileComponent } from './authenticated/profile/profile.component';
 
-// services
+// Services
 import { AuthService } from './services/auth.service';
 import { FeedService } from './services/feed.service';
 import { AchievementsService } from './services/achievements.service';
 
+
 // Routes
 const appRoutes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: '',
     component: AppComponent,

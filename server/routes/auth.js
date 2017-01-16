@@ -20,7 +20,22 @@ router.post('/signup', (req, res) => {
 
 /* get user achievements */
 router.get('/userachievements', (req, res) => {
-  user.getUserAchievements( req.query.id, function(err, result ) {
+  user.getUserAchievements(req.query.id, function(err, result) {
+    res.json(result);
+  });
+});
+
+/* update user achievements */
+router.put('/addachievement', (req, res) => {
+  user.addAchievement( req.body, function(err, result ) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+/* delete user achievements */
+router.delete('/removeachievement', (req, res) => {
+  user.removeAchievement( req.query.id, req.query.achievement, function(err, result ) {
     if (err) throw err;
     res.json(result);
   });

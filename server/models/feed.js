@@ -3,17 +3,36 @@ var mongoose = require('mongoose');
 
 
 exports.getFeed = function( callback ) {
-  Feed.find().populate("achievement").populate('user').exec( function( err, docs ) {
+  Feed.find({ active: true })
+  .sort({ createdAt: -1 })
+  .populate("achievement").populate('user')
+  .exec( function( err, docs ) {
     callback(null, docs);
   });
 }
 
-exports.new = function( callback ) {
-  var newFeed = new Feed({
-    text: "Novo Post",
-    achievement: "58716e7e0fa8e87cdade3f27",
-    user: "58716195f5cb8d76df0d7cdc"
+exports.createPost = function( post, callback ) {
+  Feed.findOne({ achievement: post.idAchievement, user: post.idUser }, function(err, docs){
+    if(docs){
+      docs.active = true;
+      docs.createdAt = new Date();
+      docs.save();
+    } else {
+      var newPost = new Feed({
+        text: 'concluiu o achievement "'+ post.achievementName + '"',
+        achievement: post.idAchievement,
+        user: post.idUser,
+      });
+      newPost.save()
+    }
+    callback(null, "atualizado com sucesso");
   });
-  newFeed.save()
-  callback(null, newFeed);
+}
+
+exports.deletePost = function( post, callback ) {
+  Feed.findOne({ achievement: post.idAchievement, user: post.idUser }, function(err, docs){
+    docs.active = false;
+    docs.save();
+    callback(null, docs);
+  });
 }
