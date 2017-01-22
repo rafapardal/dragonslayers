@@ -19,6 +19,7 @@ exports.createPost = function( post, callback ) {
       docs.save();
     } else {
       var newPost = new Feed({
+        title: "Achievement concluido",
         text: 'concluiu o achievement "'+ post.achievementName + '"',
         achievement: post.idAchievement,
         user: post.idUser,

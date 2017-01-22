@@ -1,0 +1,53 @@
+.mdl-card {
+  width: 90%;
+  margin: 20px auto;
+  padding: 18px;
+  min-height: initial;
+  flex: inline-flex;
+  border-radius: 0 0 10px 10px;
+  border-color: #ecf0f1;
+  border-top: 5px solid #ecf0f1;
+}
+
+header {
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 10px;
+}
+
+header .img, header .info {
+  float: left;
+}
+
+header .img {
+  height: 60px;
+  width: 60px;
+  border-radius: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
+header .info {
+  margin: 0px 0px 0 10px;
+}
+
+h6, h5 {
+  font-weight: bold;
+  line-height: 10px;
+  color: #a0a0a0;
+  margin: 15px 0 0;
+}
+
+h5 {
+  color: #39393a;
+  line-height: 18px;
+  margin-bottom: 20px;
+}
+
+p {
+  color: rgb(152, 152, 152);
+}
+
+.post p {
+  color: rgb(136, 135, 135);
+  line-height: 20px;
+}

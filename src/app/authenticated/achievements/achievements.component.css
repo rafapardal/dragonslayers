@@ -1,19 +1,37 @@
 .mdl-card {
   width: 90%;
   margin: 20px auto;
+  min-height: initial;
+  border-radius: 0 0 10px 10px;
+  border-color: #ecf0f1;
+  border-top: 5px solid #ecf0f1;
 }
 
 .mdl-card__title {
-  color: #fff;
-  height: 116px;
-  background-color: #bdc3c7;
-  transition: background-color 0.3s;
+  border-bottom: 1px solid #ecf0f1;
 }
 
-.mdl-card__title.active {
+.mdl-card__title-text {
+  color: #39393a;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.mdl-card__supporting-text {
+  padding: 20px 16px;
+  font-weight: 400;
+  color: rgb(99, 99, 99);
+  line-height: 20px;
+}
+
+.mdl-button{
+  background: rgba(31, 30, 30, 0.2);
+}
+
+.mdl-button.active {
   background-color: #3498db;
 }
 
-.mdl-card__menu {
+.mdl-button {
   color: #fff;
 }

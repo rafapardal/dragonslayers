@@ -1,0 +1,53 @@
+.profile-header {
+  background-color: rgb(96,125,139);
+  padding: 40px 0;
+  color: #fff;
+  text-align: center;
+}
+
+.profile-header > img {
+  width: 150px;
+  height: 150px;
+  border-radius: 100%;
+}
+
+.profile-header > .name {
+  font-size: 23px;
+  font-weight: 700;
+  margin: 20px 0 10px;
+  min-height: 24px;
+}
+
+.profile-header > .achievements {
+  font-weight: lighter;
+  font-size: 13px;
+  line-height: 13px;
+  min-height: 13px;
+}
+
+.mdl-list {
+  width: 100%;
+  padding: 0;
+  cursor: pointer;
+}
+
+.mdl-list > .mdl-list__item {
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  color: rgba(101, 96, 96, 0.87);
+}
+
+.mdl-list > .mdl-list__item.logout {
+  border-top: 1px solid #eee;
+  margin-top: 20px;
+}
+
+.mdl-list .mdl-list__item-avatar, .mdl-list__item-avatar.material-icons {
+  height: 25px;
+  width: 25px;
+  font-size: 25px;
+}
+
+.mdl-list .mdl-list__item-secondary-action .material-icons {
+  color: rgba(101, 96, 96, 0.87);
+}

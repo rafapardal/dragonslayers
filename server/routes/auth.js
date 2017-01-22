@@ -18,6 +18,14 @@ router.post('/signup', (req, res) => {
   });
 });
 
+// GET user single data
+router.get('/getuser', (req, res) => {
+  user.getUser( req.query.id, function(err, result ) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
 /* get user achievements */
 router.get('/userachievements', (req, res) => {
   user.getUserAchievements(req.query.id, function(err, result) {

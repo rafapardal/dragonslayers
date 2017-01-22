@@ -3,6 +3,7 @@ var mongoose = require('mongoose')
 
 var FeedSchema = new Schema({
   id: { type: Schema.Types.ObjectId },
+  title: String,
   text: String,
   achievement: { type : Schema.Types.ObjectId, ref: 'Achievement' },
   user: { type : Schema.Types.ObjectId, ref: 'User' },

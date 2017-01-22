@@ -43,6 +43,13 @@ export class AuthService implements CanActivate {
       });
    }
 
+   public getUserData() {
+     return this.http.get('/api/auth/getuser', { search: 'id=' + this.getUser()})
+      .map((response: Response) => {
+        return response.json();
+      });
+   }
+
    public authenticated() : void {
      if (this.currentUser){
        this.router.navigate(['/auth']);

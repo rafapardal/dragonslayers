@@ -1,1 +1,34 @@
-<button (click)="logout()" type="button" class="btn btn-danger">Logout</button>
+<div class="profile-header" >
+  <img width="150px" height="150px" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"/>
+
+  <p class="name">{{userData?.name.first}} {{userData?.name.last}}</p>
+  <p class="achievements">Achievements completos: {{userData?.achievements.length}}</p>
+</div>
+
+
+
+<div class="mdl-list">
+  <div class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+      <i class="material-icons mdl-list__item-avatar">person</i>
+      <span>Achievements Completos</span>
+    </span>
+    <a class="mdl-list__item-secondary-action"><i class="material-icons">keyboard_arrow_right</i></a>
+  </div>
+  <div class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">
+      <i class="material-icons mdl-list__item-avatar">account_circle</i>
+      <span>Alterar Dados</span>
+    </span>
+    <a class="mdl-list__item-secondary-action"><i class="material-icons">keyboard_arrow_right</i></a>
+  </div>
+  <div class="mdl-list__item logout" (click)="logout()">
+    <span class="mdl-list__item-primary-content">
+      <i class="material-icons mdl-list__item-avatar">person</i>
+      <span>Logout</span>
+    </span>
+    <span class="mdl-list__item-secondary-content">
+      <a class="mdl-list__item-secondary-action"><i class="material-icons">keyboard_arrow_right</i></a>
+  </span>
+  </div>
+</div>

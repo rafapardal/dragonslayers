@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, AfterContentInit } from '@angular/core';
 import { AchievementsService } from '../../services/achievements.service';
 import { AuthService } from '../../services/auth.service';
 import { FeedService } from '../../services/feed.service';
@@ -7,19 +7,17 @@ import { FeedService } from '../../services/feed.service';
 @Component({
   selector: 'app-achievements',
   templateUrl: './achievements.component.html',
-
   styleUrls: ['./achievements.component.css']
 })
-export class AchievementsComponent implements OnInit {
+export class AchievementsComponent implements AfterContentInit {
   private achievementList = [];
   private ids = [];
 
 
   constructor(private achievements: AchievementsService, private auth: AuthService, private feed: FeedService) {}
 
-  ngOnInit() {
+  ngAfterContentInit() {
     this.getIds();
-    this.getAchievementList()
   }
 
   changeAchievement(achievement, index){
@@ -34,7 +32,7 @@ export class AchievementsComponent implements OnInit {
       this.achievements.removeAchievements(this.auth.getUser(), achievement.result._id).subscribe(result => {});
       this.achievementList[index].done = false;
       this.feed.deletePost({ idAchievement: achievement.result._id, idUser: this.auth.getUser(), achievementName: achievement.result.name})
-      .subscribe(result =>{});
+      .subscribe();
     }
   }
 
@@ -43,6 +41,7 @@ export class AchievementsComponent implements OnInit {
     this.auth.getUserAchievements(this.auth.getUser()).subscribe(result => {
       sessionStorage.setItem("ids", JSON.stringify(result.achievements));
       this.ids = JSON.parse(sessionStorage.getItem("ids"));
+      this.getAchievementList()
     });
   }
 

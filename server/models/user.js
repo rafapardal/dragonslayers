@@ -33,6 +33,12 @@ exports.signUp = function(user, callback) {
       })
 }
 
+exports.getUser = function(id, callback) {
+  User.findOne({ '_id': id }, function(err, docs) {
+      callback(null, { success: true, user: docs});
+  })
+}
+
 exports.getUserAchievements = function(id, callback) {
   User.findOne({ '_id': id }, function(err, docs) {
     callback(null, { achievements: docs.achievements });

@@ -1,18 +1,22 @@
-<div class="container">
-  <div class="row" *ngFor="let post of posts">
-    <div class="mdl-card mdl-shadow--2dp">
-      <div class="mdl-card__title">
-        <h2 class="mdl-card__title-text">{{post.achievement.name}}</h2>
-      </div>
-      <div class="mdl-card__supporting-text">
-        {{post.user.name.first}} {{post.user.name.last}} {{ post.text }}
+<div *ngFor="let post of posts">
+  <div class="mdl-card mdl-shadow--2dp">
+    <header>
+      <div class="img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png')"></div>
+      <div class="info">
+        <h6>{{post.user.name.first}} {{post.user.name.last}}</h6>
         <p>{{post.createdAt | date:'dd/MM/yy'}} ás {{post.createdAt | date:'HH:mm'}}</p>
       </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-          Ver o(s) {{post.comments.length}} comentário(s)
-        </a>
-      </div>
+    </header>
+    <div class="post">
+      <h5>Achievement "{{post.achievement.name}}" concluido</h5>
+      <p>{{ post.text }}</p>
     </div>
+    <!--
+    <div class="mdl-card__actions mdl-card--border">
+      <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+        <i class="material-icons">comment</i> {{post.comments.length}} comentário(s)
+      </a>
+    </div>
+    -->
   </div>
 </div>
