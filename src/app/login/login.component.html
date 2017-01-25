@@ -71,12 +71,11 @@
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--8-col">
       <form class="form-horizontal" [formGroup]="userLogin" (ngSubmit)="login()" novalidate>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" type="text" id="inputUsername"  formControlName="username" pattern="-?[A-Z,a-z,0-9,\-,_]*(\.[0-9]+)?">
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" type="text" id="inputUsername"  formControlName="username">
           <label class="mdl-textfield__label" for="user">Username</label>
-          <span class="mdl-textfield__error">Letters and spaces only</span>
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <div class="mdl-textfield mdl-js-textfield">
           <input class="mdl-textfield__input" type="password" id="inputPassword" formControlName="password">
           <label class="mdl-textfield__label" for="user">Password</label>
         </div>
@@ -87,6 +86,8 @@
 </div>
 
   <div class="mdl-tabs__panel" id="registo-panel">
-    Registo
+    <input class="mdl-textfield__input" type="text" id="inputUsername"  formControlName="username" pattern="-?[A-Z,a-z,0-9,\-,_]*(\.[0-9]+)?">
+    <label class="mdl-textfield__label" for="user">Username</label>
+    <span class="mdl-textfield__error">Letters and spaces only</span>
   </div>
 </div>

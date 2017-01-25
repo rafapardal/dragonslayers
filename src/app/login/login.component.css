@@ -8,8 +8,25 @@
 
 .mdl-cell button {
   border-radius: 100px;
-  border:2px solid rgb(255,82,82);
-  color: rgb(255,82,82);
-  background-color: transparent;
   box-shadow: none;
+}
+
+.mdl-textfield.is-focused .mdl-textfield__label:after {
+  display: none;
+}
+
+.mdl-textfield {
+  padding: 10px 0;
+}
+
+.mdl-textfield__input {
+  border: 1px solid rgb(208, 208, 208);
+  box-sizing: border-box;
+  padding: 8px 20px;
+  border-radius: 100px;
+}
+
+.mdl-textfield__label {
+    left: 20px;
+    top: 19px;
 }
