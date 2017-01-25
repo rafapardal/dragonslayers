@@ -1,0 +1,15 @@
+.mdl-cell--8-col {
+  margin: auto;
+}
+
+.mdl-cell .mdl-textfield, .mdl-cell button {
+  width: 100%;
+}
+
+.mdl-cell button {
+  border-radius: 100px;
+  border:2px solid rgb(255,82,82);
+  color: rgb(255,82,82);
+  background-color: transparent;
+  box-shadow: none;
+}
