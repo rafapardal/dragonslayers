@@ -3,7 +3,7 @@ const crypt = require('crypto-js/sha256');
 const jwt = require('jsonwebtoken');
 
 exports.login = function(username, password, callback) {
-  User.findOne({ 'username': username }, function(err, docs) {
+  User.findOne({ 'username': {'$regex': new RegExp(["^", username, "$"].join(""), "i")} }, function(err, docs) {
     if(docs && docs.password == crypt(password)) {
       var token = jwt.sign(docs, "DragonSlayers", { expiresIn: '24h' });
       console.log(docs._id);
@@ -15,7 +15,7 @@ exports.login = function(username, password, callback) {
 }
 
 exports.signUp = function(user, callback) {
-      User.findOne({ 'username': user.username }, function(err, docs) {
+      User.findOne({ 'username': {'$regex': new RegExp(["^", user.username, "$"].join(""), "i")} }, function(err, docs) {
         if(docs) {
           callback(null, { success: false, mensagem: "Já existe este nome de utilizador" });
         } else {

@@ -82,6 +82,7 @@ var AuthService = (function () {
     AuthService.prototype.logout = function () {
         localStorage.removeItem('currentUser');
         this.setUser();
+        localStorage.setItem('refreshed', 'false');
     };
     AuthService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["R" /* Injectable */])(), 
@@ -634,11 +635,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var LoginComponent = (function () {
-    function LoginComponent(http, auth, router) {
+    function LoginComponent(http, auth, router, ngZone) {
         this.http = http;
         this.auth = auth;
         this.router = router;
-        this.error = "nada";
+        this.ngZone = ngZone;
         this.alert = false;
         // Login Form
         this.userLogin = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormGroup */]({
@@ -655,6 +656,15 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         this.auth.authenticated();
+        this.reRenderPage();
+    };
+    LoginComponent.prototype.reRenderPage = function () {
+        if (localStorage.getItem('refreshed') === 'false') {
+            localStorage.setItem('refreshed', 'true');
+            this.ngZone.runOutsideAngular(function () {
+                location.reload();
+            });
+        }
     };
     LoginComponent.prototype.login = function () {
         var _this = this;
@@ -665,9 +675,29 @@ var LoginComponent = (function () {
             }
             else {
                 _this.error = result.mensagem;
-                _this.alert = true;
+                _this.displayErrors();
             }
         });
+    };
+    LoginComponent.prototype.signUpErrors = function (user) {
+        if (user.username.length < 3) {
+            this.error = "O Username tem de conter mais de 2 caracteres";
+            return true;
+        }
+        else if (user.firstname.length < 3) {
+            this.error = "O Primeiro nome tem de conter mais de 2 caracteres";
+            return true;
+        }
+        else if (user.lastname.length < 3) {
+            this.error = "O Ultimo nome tem de conter mais de 2 caracteres";
+            return true;
+        }
+        return false;
+    };
+    LoginComponent.prototype.displayErrors = function () {
+        var _this = this;
+        this.alert = true;
+        setTimeout(function () { _this.alert = false; }, 1500);
     };
     LoginComponent.prototype.signUp = function () {
         var _this = this;
@@ -677,17 +707,22 @@ var LoginComponent = (function () {
             firstname: this.userRegisto.value.firstName,
             lastname: this.userRegisto.value.lastName
         };
-        this.auth.signUp(user).subscribe(function (result) {
-            if (result.success) {
-                _this.userLogin.value.username = result.username;
-                _this.userLogin.value.password = result.password;
-                _this.login();
-            }
-            else {
-                _this.error = result.mensagem;
-                _this.alert = true;
-            }
-        });
+        if (this.signUpErrors(user) == true) {
+            this.displayErrors();
+        }
+        else {
+            this.auth.signUp(user).subscribe(function (result) {
+                if (result.success) {
+                    _this.userLogin.value.username = result.username;
+                    _this.userLogin.value.password = result.password;
+                    _this.login();
+                }
+                else {
+                    _this.error = result.mensagem;
+                    _this.displayErrors();
+                }
+            });
+        }
     };
     LoginComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
@@ -695,10 +730,10 @@ var LoginComponent = (function () {
             template: __webpack_require__(673),
             styles: [__webpack_require__(667)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === 'function' && _c) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_26" /* NgZone */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_26" /* NgZone */]) === 'function' && _d) || Object])
     ], LoginComponent);
     return LoginComponent;
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
 }());
 //# sourceMappingURL=/home/rafa/Documents/apps/dragonslayers/src/login.component.js.map
 
@@ -814,7 +849,7 @@ module.exports = ".profile-header {\n  background-color: rgb(96,125,139);\n  pad
 /***/ 667:
 /***/ function(module, exports) {
 
-module.exports = ".mdl-cell--8-col {\n  margin: auto;\n}\n\n.mdl-cell .mdl-textfield, .mdl-cell button {\n  width: 100%;\n}\n\n.mdl-cell button {\n  border-radius: 100px;\n  box-shadow: none;\n}\n\n.mdl-textfield.is-focused .mdl-textfield__label:after {\n  display: none;\n}\n\n.mdl-textfield {\n  padding: 10px 0;\n}\n\n.mdl-textfield__input {\n  border: 1px solid rgb(208, 208, 208);\n  box-sizing: border-box;\n  padding: 8px 20px;\n  border-radius: 100px;\n}\n\n.mdl-textfield__label {\n    left: 20px;\n    top: 19px;\n}\n"
+module.exports = ".mdl-cell--8-col {\n  margin: auto;\n}\n\n.mdl-cell .mdl-textfield, .mdl-cell button {\n  width: 100%;\n}\n\n.mdl-cell button {\n  border-radius: 100px;\n  box-shadow: none;\n}\n\n.mdl-textfield.is-focused .mdl-textfield__label:after {\n  display: none;\n}\n\n.mdl-textfield {\n  padding: 10px 0;\n}\n\n.mdl-textfield__input {\n  border: 1px solid rgb(208, 208, 208);\n  box-sizing: border-box;\n  padding: 8px 20px;\n  border-radius: 100px;\n}\n\n.mdl-textfield__label {\n    left: 20px;\n    top: 19px;\n}\n\n.mdl-textfield__error {\n    margin-top: 0;\n    margin-left: 10px;\n}\n"
 
 /***/ },
 
@@ -856,7 +891,7 @@ module.exports = "<div class=\"profile-header\" >\n  <img width=\"150px\" height
 /***/ 673:
 /***/ function(module, exports) {
 
-module.exports = "<!--\n\n<ul class=\"nav nav-tabs\" role=\"tablist\">\n  <li role=\"presentation\" class=\"active\" style=\"width: 50%; text-align: center;\"><a href=\"#login\" aria-controls=\"login\" role=\"tab\" data-toggle=\"tab\" style=\"padding: 25px 0\">Login</a></li>\n  <li role=\"presentation\" style=\"width: 50%; text-align: center;\"><a href=\"#signup\" aria-controls=\"signup\" role=\"tab\" data-toggle=\"tab\" style=\"padding: 25px 0\">Registo</a></li>  </ul>\n\n<div class=\"tab-content\">\n  <div class=\"alert alert-danger alert-dismissible\" role=\"alert\" [hidden]=\"!alert\">\n    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n    <strong>Aviso!</strong> {{this.error}}\n  </div>\n  <div role=\"tabpanel\" class=\"tab-pane active\" id=\"login\">\n    <div class=\"container-fluid\" style=\"margin: 10% auto\">\n      <div class=\"row\">\n        <div class=\"col-md-4\" style=\"margin: 0 auto; float: unset\">\n        </div>\n      </div>\n    </div>\n  </div>\n  <div role=\"tabpanel\" class=\"tab-pane\" id=\"signup\">\n    <div class=\"container-fluid\" style=\"margin: 10% auto\">\n      <div class=\"row\">\n        <div class=\"col-md-4\" style=\"margin: 0 auto; float: unset\">\n          <form class=\"form-horizontal\" [formGroup]=\"userRegisto\" (ngSubmit)=\"signUp()\" novalidate>\n            <div class=\"form-group\">\n              <label for=\"inputUsername\" class=\"col-sm-3 control-label\">Username</label>\n              <div class=\"col-sm-9\">\n                <input type=\"text\" class=\"form-control\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\">\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"inputPassword\" class=\"col-sm-3 control-label\">Password</label>\n              <div class=\"col-sm-9\">\n                <input type=\"password\" class=\"form-control\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"inputFirstName\" class=\"col-sm-3 control-label\">primeiro Nome</label>\n              <div class=\"col-sm-9\">\n                <input type=\"text\" class=\"form-control\" id=\"inputFirstName\" placeholder=\"Primeiro Nome\" formControlName=\"firstName\">\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <label for=\"inputLastName\" class=\"col-sm-3 control-label\">Ultimo Nome</label>\n              <div class=\"col-sm-9\">\n                <input type=\"text\" class=\"form-control\" id=\"inputLastName\" placeholder=\"Ultimo Nome\" formControlName=\"lastName\">\n              </div>\n            </div>\n            <div class=\"form-group\">\n              <div class=\"col-sm-offset-2 col-sm-10\">\n                <button type=\"submit\" class=\"btn btn-default\">Registar</button>\n              </div>\n            </div>\n          </form>\n\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n\n-->\n\n<div class=\"mdl-tabs mdl-js-tabs mdl-js-ripple-effect\">\n  <div class=\"mdl-tabs__tab-bar\">\n      <a href=\"#login-panel\" class=\"mdl-tabs__tab is-active\">Login</a>\n      <a href=\"#registo-panel\" class=\"mdl-tabs__tab\">Registo</a>\n  </div>\n\n<div class=\"mdl-tabs__panel is-active\" id=\"login-panel\">\n  <div class=\"mdl-grid\">\n    <div class=\"mdl-cell mdl-cell--8-col\">\n      <form class=\"form-horizontal\" [formGroup]=\"userLogin\" (ngSubmit)=\"login()\" novalidate>\n        <div class=\"mdl-textfield mdl-js-textfield\">\n          <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\">\n        </div>\n        <div class=\"mdl-textfield mdl-js-textfield\">\n          <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n        </div>\n        <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\">Login</button>\n      </form>\n    </div>\n  </div>\n</div>\n\n  <div class=\"mdl-tabs__panel\" id=\"registo-panel\">\n    <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\"  formControlName=\"username\" pattern=\"-?[A-Z,a-z,0-9,\\-,_]*(\\.[0-9]+)?\">\n    <label class=\"mdl-textfield__label\" for=\"user\">Username</label>\n    <span class=\"mdl-textfield__error\">Letters and spaces only</span>\n  </div>\n</div>\n"
+module.exports = "<div class=\"mdl-tabs mdl-js-tabs mdl-js-ripple-effect\">\n  <div class=\"mdl-tabs__tab-bar\">\n      <a href=\"#login-panel\" class=\"mdl-tabs__tab is-active\">Login</a>\n      <a href=\"#registo-panel\" class=\"mdl-tabs__tab\">Registo</a>\n  </div>\n\n  <div class=\"mdl-tabs__panel is-active\" id=\"login-panel\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"userLogin\" (ngSubmit)=\"login()\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\">\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n          </div>\n          <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\">Login</button>\n        </form>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"mdl-tabs__panel\" id=\"registo-panel\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"userRegisto\" (ngSubmit)=\"signUp()\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\" pattern=\"-?[A-Z,a-z,0-9,\\-,_]*(\\.[0-9]+)?\">\n            <span class=\"mdl-textfield__error\">Não pode conter espaços</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n            <span class=\"mdl-textfield__error\">Password tem de ser maior que 5 caracteres</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputFirstName\" placeholder=\"Primeiro Nome\" formControlName=\"firstName\" pattern=\"[A-Z,a-z]*\">\n            <span class=\"mdl-textfield__error\">Só pode conter caracteres</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputLastName\" placeholder=\"Ultimo Nome\" formControlName=\"lastName\" pattern=\"[A-Z,a-z]*\">\n            <span class=\"mdl-textfield__error\">Só pode conter caracteres</span>\n          </div>\n          <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\">Registar</button>\n        </form>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"mdl-js-snackbar mdl-snackbar\" [class.mdl-snackbar--active]=\"alert\">\n  <div class=\"mdl-snackbar__text\">\n    {{error}}\n  </div>\n  <button class=\"mdl-snackbar__action\" type=\"button\"></button>\n</div>\n"
 
 /***/ },
 

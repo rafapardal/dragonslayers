@@ -30,3 +30,8 @@
     left: 20px;
     top: 19px;
 }
+
+.mdl-textfield__error {
+    margin-top: 0;
+    margin-left: 10px;
+}
