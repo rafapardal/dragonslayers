@@ -72,12 +72,10 @@
     <div class="mdl-cell mdl-cell--8-col">
       <form class="form-horizontal" [formGroup]="userLogin" (ngSubmit)="login()" novalidate>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="text" id="inputUsername"  formControlName="username">
-          <label class="mdl-textfield__label" for="user">Username</label>
+          <input class="mdl-textfield__input" type="text" id="inputUsername" placeholder="Username" formControlName="username">
         </div>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="password" id="inputPassword" formControlName="password">
-          <label class="mdl-textfield__label" for="user">Password</label>
+          <input class="mdl-textfield__input" type="password" id="inputPassword" placeholder="Password" formControlName="password">
         </div>
         <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button>
       </form>
