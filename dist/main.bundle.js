@@ -62,6 +62,12 @@ var AuthService = (function () {
             return response.json();
         });
     };
+    AuthService.prototype.checkUsername = function (username) {
+        return this.http.get('/api/auth/checkusername', { search: 'username=' + username })
+            .map(function (response) {
+            return response.json().result;
+        });
+    };
     AuthService.prototype.authenticated = function () {
         if (this.currentUser) {
             this.router.navigate(['/auth']);
@@ -96,6 +102,58 @@ var AuthService = (function () {
 /***/ },
 
 /***/ 217:
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(101);
+/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AchievementsService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var AchievementsService = (function () {
+    function AchievementsService(http) {
+        this.http = http;
+    }
+    AchievementsService.prototype.getList = function () {
+        return this.http.get('/api/achievement/')
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    AchievementsService.prototype.addAchievements = function (id, achievement) {
+        var achievementToAdd = { 'id': id, 'achievement': achievement };
+        return this.http.put('/api/auth/addachievement/', achievementToAdd)
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    AchievementsService.prototype.removeAchievements = function (id, idAchievements) {
+        return this.http.delete('/api/auth/removeachievement/', { search: 'id=' + id + '&achievement=' + idAchievements })
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    AchievementsService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["R" /* Injectable */])(), 
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === 'function' && _a) || Object])
+    ], AchievementsService);
+    return AchievementsService;
+    var _a;
+}());
+//# sourceMappingURL=/home/rafa/Documents/apps/dragonslayers/src/achievements.service.js.map
+
+/***/ },
+
+/***/ 218:
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -146,58 +204,6 @@ var FeedService = (function () {
     var _a;
 }());
 //# sourceMappingURL=/home/rafa/Documents/apps/dragonslayers/src/feed.service.js.map
-
-/***/ },
-
-/***/ 331:
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(101);
-/* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AchievementsService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var AchievementsService = (function () {
-    function AchievementsService(http) {
-        this.http = http;
-    }
-    AchievementsService.prototype.getList = function () {
-        return this.http.get('/api/achievement/')
-            .map(function (response) {
-            return response.json();
-        });
-    };
-    AchievementsService.prototype.addAchievements = function (id, achievement) {
-        var achievementToAdd = { 'id': id, 'achievement': achievement };
-        return this.http.put('/api/auth/addachievement/', achievementToAdd)
-            .map(function (response) {
-            return response.json();
-        });
-    };
-    AchievementsService.prototype.removeAchievements = function (id, idAchievements) {
-        return this.http.delete('/api/auth/removeachievement/', { search: 'id=' + id + '&achievement=' + idAchievements })
-            .map(function (response) {
-            return response.json();
-        });
-    };
-    AchievementsService = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["R" /* Injectable */])(), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === 'function' && _a) || Object])
-    ], AchievementsService);
-    return AchievementsService;
-    var _a;
-}());
-//# sourceMappingURL=/home/rafa/Documents/apps/dragonslayers/src/achievements.service.js.map
 
 /***/ },
 
@@ -288,8 +294,8 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__authenticated_achievements_achievements_component__ = __webpack_require__(503);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__authenticated_profile_profile_component__ = __webpack_require__(506);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_auth_service__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_feed_service__ = __webpack_require__(217);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_achievements_service__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_feed_service__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_achievements_service__ = __webpack_require__(217);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -379,9 +385,9 @@ var AppModule = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_achievements_service__ = __webpack_require__(331);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_achievements_service__ = __webpack_require__(217);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_service__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_feed_service__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_feed_service__ = __webpack_require__(218);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return AchievementsComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -519,7 +525,7 @@ var AuthenticatedComponent = (function () {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_feed_service__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_feed_service__ = __webpack_require__(218);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return FeedComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -619,6 +625,7 @@ var ProfileComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_service__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_achievements_service__ = __webpack_require__(217);
 /* harmony export (binding) */ __webpack_require__.d(exports, "a", function() { return LoginComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -634,13 +641,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var LoginComponent = (function () {
-    function LoginComponent(http, auth, router, ngZone) {
+    function LoginComponent(http, auth, router, ngZone, achievements) {
         this.http = http;
         this.auth = auth;
         this.router = router;
         this.ngZone = ngZone;
+        this.achievements = achievements;
         this.alert = false;
+        this.showSignUpSecondScreen = false;
+        this.achievementList = [];
         // Login Form
         this.userLogin = new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormGroup */]({
             username: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* FormControl */](''),
@@ -670,7 +681,6 @@ var LoginComponent = (function () {
         var _this = this;
         this.auth.login(this.userLogin.value.username, this.userLogin.value.password).subscribe(function (result) {
             if (result.success) {
-                _this.alert = false;
                 _this.router.navigate(['/auth']);
             }
             else {
@@ -679,50 +689,90 @@ var LoginComponent = (function () {
             }
         });
     };
-    LoginComponent.prototype.signUpErrors = function (user) {
-        if (user.username.length < 3) {
-            this.error = "O Username tem de conter mais de 2 caracteres";
-            return true;
-        }
-        else if (user.firstname.length < 3) {
-            this.error = "O Primeiro nome tem de conter mais de 2 caracteres";
-            return true;
-        }
-        else if (user.lastname.length < 3) {
-            this.error = "O Ultimo nome tem de conter mais de 2 caracteres";
-            return true;
-        }
-        return false;
-    };
     LoginComponent.prototype.displayErrors = function () {
         var _this = this;
         this.alert = true;
         setTimeout(function () { _this.alert = false; }, 1500);
     };
-    LoginComponent.prototype.signUp = function () {
+    LoginComponent.prototype.signUpSend = function () {
         var _this = this;
-        var user = {
+        var achievements = [];
+        for (var _i = 0, _a = this.achievementList; _i < _a.length; _i++) {
+            var achievement = _a[_i];
+            if (achievement.done == true)
+                achievements.push(achievement.result._id);
+        }
+        this.user.achievements = achievements;
+        this.auth.signUp(this.user).subscribe(function (result) {
+            if (result.success) {
+                _this.userLogin.value.username = result.username;
+                _this.userLogin.value.password = result.password;
+                _this.login();
+            }
+            else {
+                _this.error = result.mensagem;
+                _this.displayErrors();
+            }
+        });
+    };
+    LoginComponent.prototype.SignUpSecondScreen = function () {
+        var _this = this;
+        this.showSignUpSecondScreen = true;
+        this.achievementList = [];
+        this.achievements.getList().subscribe(function (result) {
+            for (var _i = 0, result_1 = result; _i < result_1.length; _i++) {
+                var entry = result_1[_i];
+                _this.achievementList.push({ 'result': entry, 'done': false });
+            }
+        });
+    };
+    LoginComponent.prototype.changeAchievement = function (achievement, index) {
+        if (achievement.done == false) {
+            this.achievementList[index].done = true;
+        }
+        else {
+            this.achievementList[index].done = false;
+        }
+    };
+    LoginComponent.prototype.checkIfUsernameExists = function (user) {
+        var _this = this;
+        this.auth.checkUsername(user.username).subscribe(function (usernameExists) {
+            if (usernameExists == true) {
+                _this.error = "Já existe este nome de utilizador";
+                _this.displayErrors();
+                return true;
+            }
+            else {
+                _this.signUpErrors(user);
+            }
+        });
+    };
+    LoginComponent.prototype.signUpErrors = function (user) {
+        if (user.username.length < 3) {
+            this.error = "O Username tem de conter mais de 2 caracteres";
+            this.displayErrors();
+            return true;
+        }
+        else if (user.firstname.length < 3) {
+            this.error = "O Primeiro nome tem de conter mais de 2 caracteres";
+            this.displayErrors();
+            return true;
+        }
+        else if (user.lastname.length < 3) {
+            this.error = "O Ultimo nome tem de conter mais de 2 caracteres";
+            this.displayErrors();
+            return true;
+        }
+        this.SignUpSecondScreen();
+    };
+    LoginComponent.prototype.signUpValidation = function () {
+        this.user = {
             username: this.userRegisto.value.username,
             password: this.userRegisto.value.password,
             firstname: this.userRegisto.value.firstName,
             lastname: this.userRegisto.value.lastName
         };
-        if (this.signUpErrors(user) == true) {
-            this.displayErrors();
-        }
-        else {
-            this.auth.signUp(user).subscribe(function (result) {
-                if (result.success) {
-                    _this.userLogin.value.username = result.username;
-                    _this.userLogin.value.password = result.password;
-                    _this.login();
-                }
-                else {
-                    _this.error = result.mensagem;
-                    _this.displayErrors();
-                }
-            });
-        }
+        this.checkIfUsernameExists(this.user);
     };
     LoginComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
@@ -730,10 +780,10 @@ var LoginComponent = (function () {
             template: __webpack_require__(673),
             styles: [__webpack_require__(667)]
         }), 
-        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_26" /* NgZone */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_26" /* NgZone */]) === 'function' && _d) || Object])
+        __metadata('design:paramtypes', [(typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === 'function' && _a) || Object, (typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_4__services_auth_service__["a" /* AuthService */]) === 'function' && _b) || Object, (typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === 'function' && _c) || Object, (typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["_26" /* NgZone */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_0__angular_core__["_26" /* NgZone */]) === 'function' && _d) || Object, (typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5__services_achievements_service__["a" /* AchievementsService */] !== 'undefined' && __WEBPACK_IMPORTED_MODULE_5__services_achievements_service__["a" /* AchievementsService */]) === 'function' && _e) || Object])
     ], LoginComponent);
     return LoginComponent;
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
 }());
 //# sourceMappingURL=/home/rafa/Documents/apps/dragonslayers/src/login.component.js.map
 
@@ -814,7 +864,7 @@ var environment = {
 /***/ 662:
 /***/ function(module, exports) {
 
-module.exports = ""
+module.exports = "body {\n  background-color: #f9f9f9;\n}\n"
 
 /***/ },
 
@@ -849,7 +899,7 @@ module.exports = ".profile-header {\n  background-color: rgb(96,125,139);\n  pad
 /***/ 667:
 /***/ function(module, exports) {
 
-module.exports = ".mdl-cell--8-col {\n  margin: auto;\n}\n\n.mdl-cell .mdl-textfield, .mdl-cell button {\n  width: 100%;\n}\n\n.mdl-cell button {\n  border-radius: 100px;\n  box-shadow: none;\n}\n\n.mdl-textfield.is-focused .mdl-textfield__label:after {\n  display: none;\n}\n\n.mdl-textfield {\n  padding: 10px 0;\n}\n\n.mdl-textfield__input {\n  border: 1px solid rgb(208, 208, 208);\n  box-sizing: border-box;\n  padding: 8px 20px;\n  border-radius: 100px;\n}\n\n.mdl-textfield__label {\n    left: 20px;\n    top: 19px;\n}\n\n.mdl-textfield__error {\n    margin-top: 0;\n    margin-left: 10px;\n}\n"
+module.exports = ".mdl-cell--8-col {\n  margin: auto;\n}\n\n.mdl-cell .mdl-textfield,  button.action {\n  width: 100%;\n}\n\nbutton.action {\n  border-radius: 100px;\n  box-shadow: none;\n}\n\n.mdl-textfield.is-focused .mdl-textfield__label:after {\n  display: none;\n}\n\n.mdl-textfield {\n  padding: 10px 0;\n}\n\n.mdl-textfield__input {\n  border: 1px solid rgb(208, 208, 208);\n  box-sizing: border-box;\n  padding: 8px 20px;\n  border-radius: 100px;\n}\n\n.mdl-textfield__label {\n    left: 20px;\n    top: 19px;\n}\n\n.mdl-textfield__error {\n    margin-top: 0;\n    margin-left: 10px;\n}\n\n.mdl-js-snackbar {\n  z-index: 10001;\n}\n\n.dialog {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10000;\n  background-color: #f9f9f9;\n}\n\n.dialog.dialog--active {\n  display: block;\n}\n\n.dialog .action {\n  width: 90%;\n  margin: 30px auto;\n  display: block;\n}\n\n.dialog .back {\n  display: block;\n  cursor: pointer;\n  width: 90%;\n  margin: 20px auto;\n  font-size: 24px;\n}\n\n.mdl-card {\n  width: 90%;\n  margin: 20px auto;\n  min-height: initial;\n  border-radius: 0 0 10px 10px;\n  border-color: #ecf0f1;\n  border-top: 5px solid #ecf0f1;\n}\n\n.mdl-card__title {\n  border-bottom: 1px solid #ecf0f1;\n}\n\n.mdl-card__title-text {\n  color: #39393a;\n  font-weight: 700;\n  font-size: 20px;\n}\n\n.mdl-card__supporting-text {\n  padding: 20px 16px;\n  font-weight: 400;\n  color: rgb(99, 99, 99);\n  line-height: 20px;\n}\n\n.mdl-button{\n  background: rgba(31, 30, 30, 0.2);\n}\n\n.mdl-button.active {\n  background-color: #3498db;\n}\n\n.mdl-button {\n  color: #fff;\n}\n\n.loading {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 11000;\n  background-color: rgba(0, 0, 0, 0.55);\n}\n\n.loading--active {\n  display: block;\n}\n"
 
 /***/ },
 
@@ -891,7 +941,7 @@ module.exports = "<div class=\"profile-header\" >\n  <img width=\"150px\" height
 /***/ 673:
 /***/ function(module, exports) {
 
-module.exports = "<div class=\"mdl-tabs mdl-js-tabs mdl-js-ripple-effect\">\n  <div class=\"mdl-tabs__tab-bar\">\n      <a href=\"#login-panel\" class=\"mdl-tabs__tab is-active\">Login</a>\n      <a href=\"#registo-panel\" class=\"mdl-tabs__tab\">Registo</a>\n  </div>\n\n  <div class=\"mdl-tabs__panel is-active\" id=\"login-panel\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"userLogin\" (ngSubmit)=\"login()\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\">\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n          </div>\n          <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\">Login</button>\n        </form>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"mdl-tabs__panel\" id=\"registo-panel\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"userRegisto\" (ngSubmit)=\"signUp()\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\" pattern=\"-?[A-Z,a-z,0-9,\\-,_]*(\\.[0-9]+)?\">\n            <span class=\"mdl-textfield__error\">Não pode conter espaços</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n            <span class=\"mdl-textfield__error\">Password tem de ser maior que 5 caracteres</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputFirstName\" placeholder=\"Primeiro Nome\" formControlName=\"firstName\" pattern=\"[A-Z,a-z]*\">\n            <span class=\"mdl-textfield__error\">Só pode conter caracteres</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputLastName\" placeholder=\"Ultimo Nome\" formControlName=\"lastName\" pattern=\"[A-Z,a-z]*\">\n            <span class=\"mdl-textfield__error\">Só pode conter caracteres</span>\n          </div>\n          <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent\">Registar</button>\n        </form>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"mdl-js-snackbar mdl-snackbar\" [class.mdl-snackbar--active]=\"alert\">\n  <div class=\"mdl-snackbar__text\">\n    {{error}}\n  </div>\n  <button class=\"mdl-snackbar__action\" type=\"button\"></button>\n</div>\n"
+module.exports = "<div class=\"mdl-tabs mdl-js-tabs mdl-js-ripple-effect\">\n  <div class=\"mdl-tabs__tab-bar\">\n      <a href=\"#login-panel\" class=\"mdl-tabs__tab is-active\">Login</a>\n      <a href=\"#registo-panel\" class=\"mdl-tabs__tab\">Registo</a>\n  </div>\n\n  <div class=\"mdl-tabs__panel is-active\" id=\"login-panel\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"userLogin\" (ngSubmit)=\"login()\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\">\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n          </div>\n          <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\">Login</button>\n        </form>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"mdl-tabs__panel\" id=\"registo-panel\">\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"userRegisto\" (ngSubmit)=\"signUpValidation()\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputUsername\" placeholder=\"Username\" formControlName=\"username\" pattern=\"-?[A-Z,a-z,0-9,\\-,_]*(\\.[0-9]+)?\">\n            <span class=\"mdl-textfield__error\">Não pode conter espaços</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"password\" id=\"inputPassword\" placeholder=\"Password\" formControlName=\"password\">\n            <span class=\"mdl-textfield__error\">Password tem de ser maior que 5 caracteres</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputFirstName\" placeholder=\"Primeiro Nome\" formControlName=\"firstName\">\n            <span class=\"mdl-textfield__error\">Só pode conter caracteres</span>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputLastName\" placeholder=\"Ultimo Nome\" formControlName=\"lastName\">\n            <span class=\"mdl-textfield__error\">Só pode conter caracteres</span>\n          </div>\n          <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\">Registar</button>\n        </form>\n      </div>\n    </div>\n  </div>\n</div>\n\n<div class=\"mdl-js-snackbar mdl-snackbar\" [class.mdl-snackbar--active]=\"alert\">\n  <div class=\"mdl-snackbar__text\">\n    {{error}}\n  </div>\n  <button class=\"mdl-snackbar__action\" type=\"button\"></button>\n</div>\n\n<div class=\"dialog\"  [class.dialog--active]=\"showSignUpSecondScreen\">\n  <div class=\"back\" (click)=\"showSignUpSecondScreen = false\">\n    <i class=\"material-icons\">arrow_back</i>\n    <span>Voltar ao inicio</span>\n  </div>\n  <div *ngFor=\"let achievement of achievementList; let i = index\">\n    <div class=\"mdl-card mdl-shadow--2dp\">\n      <div>\n        <div class=\"mdl-card__title\">\n          <h2 class=\"mdl-card__title-text\">{{achievement.result.name}}</h2>\n        </div>\n        <div class=\"mdl-card__supporting-text\">\n          {{achievement.result.description}}\n        </div>\n      </div>\n      <button class=\"mdl-button mdl-js-button mdl-button--raised\" [class.active]=\"achievement.done\" (click)=\"changeAchievement(achievement, i)\">\n        <div *ngIf=\"achievement.done\" >\n          Concluido\n          <i class=\"material-icons\">check</i>\n        </div>\n        <div *ngIf=\"!achievement.done\" >\n          Por concluir\n          <i class=\"material-icons\">close</i>\n        </div>\n      </button>\n    </div>\n  </div>\n\n  <button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\" (click)=\"signUpSend()\">\n    Concluir\n  </button>\n</div>\n\n<div class=\"loading\" [class.loading--active]=\"loading\">\n  <div class=\"mdl-spinner mdl-js-spinner is-active\"></div>\n</div>\n"
 
 /***/ },
 

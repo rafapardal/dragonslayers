@@ -3,7 +3,8 @@ import { tokenNotExpired } from 'angular2-jwt';
 import { Http, Headers, Response, URLSearchParams } from '@angular/http';
 import { Router, CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
+
 
 @Injectable()
 export class AuthService implements CanActivate {
@@ -48,6 +49,13 @@ export class AuthService implements CanActivate {
       .map((response: Response) => {
         return response.json();
       });
+   }
+
+   public checkUsername(username){
+     return this.http.get('/api/auth/checkusername', { search: 'username=' + username})
+     .map((response: Response) => {
+         return response.json().result;
+     });
    }
 
    public authenticated() : void {

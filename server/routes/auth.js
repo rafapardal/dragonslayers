@@ -26,6 +26,15 @@ router.get('/getuser', (req, res) => {
   });
 });
 
+//check if user exists
+router.get('/checkusername', (req, res) => {
+  user.checkUsername( req.query.username, function(err, result ) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+
 /* get user achievements */
 router.get('/userachievements', (req, res) => {
   user.getUserAchievements(req.query.id, function(err, result) {

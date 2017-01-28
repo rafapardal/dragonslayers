@@ -15,27 +15,29 @@ exports.login = function(username, password, callback) {
 }
 
 exports.signUp = function(user, callback) {
-      User.findOne({ 'username': {'$regex': new RegExp(["^", user.username, "$"].join(""), "i")} }, function(err, docs) {
-        if(docs) {
-          callback(null, { success: false, mensagem: "Já existe este nome de utilizador" });
-        } else {
-          var newUser = new User({
-            username: user.username,
-            password: crypt(user.password),
-            name: {
-              first: user.firstname,
-              last: user.lastname
-            }
-          });
-          newUser.save();
-          callback(null, { success: true, mensagem: "Utilizador criado com sucesso", username: user.username, password: user.password });
-        };
-      })
+    var newUser = new User({
+      username: user.username,
+      password: crypt(user.password),
+      name: {
+        first: user.firstname,
+        last: user.lastname
+      },
+      achievements: user.achievements
+    });
+    newUser.save();
+    callback(null, { success: true, mensagem: "Utilizador criado com sucesso",  username: user.username, password: user.password});
 }
 
 exports.getUser = function(id, callback) {
   User.findOne({ '_id': id }, function(err, docs) {
       callback(null, { success: true, user: docs});
+  })
+}
+
+exports.checkUsername = function(username, callback) {
+  User.findOne({ 'username': {'$regex': new RegExp(["^", username, "$"].join(""), "i")} }, function(err, docs) {
+    if (docs) {callback(null, { success: true, result: true});}
+    else {callback(null, { success: true, result: false});}
   })
 }
 

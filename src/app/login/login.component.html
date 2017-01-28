@@ -14,7 +14,7 @@
           <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" type="password" id="inputPassword" placeholder="Password" formControlName="password">
           </div>
-          <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button>
+          <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action">Login</button>
         </form>
       </div>
     </div>
@@ -23,7 +23,7 @@
   <div class="mdl-tabs__panel" id="registo-panel">
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--8-col">
-        <form [formGroup]="userRegisto" (ngSubmit)="signUp()">
+        <form [formGroup]="userRegisto" (ngSubmit)="signUpValidation()">
           <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" type="text" id="inputUsername" placeholder="Username" formControlName="username" pattern="-?[A-Z,a-z,0-9,\-,_]*(\.[0-9]+)?">
             <span class="mdl-textfield__error">Não pode conter espaços</span>
@@ -33,14 +33,14 @@
             <span class="mdl-textfield__error">Password tem de ser maior que 5 caracteres</span>
           </div>
           <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="text" id="inputFirstName" placeholder="Primeiro Nome" formControlName="firstName" pattern="[A-Z,a-z]*">
+            <input class="mdl-textfield__input" type="text" id="inputFirstName" placeholder="Primeiro Nome" formControlName="firstName">
             <span class="mdl-textfield__error">Só pode conter caracteres</span>
           </div>
           <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="text" id="inputLastName" placeholder="Ultimo Nome" formControlName="lastName" pattern="[A-Z,a-z]*">
+            <input class="mdl-textfield__input" type="text" id="inputLastName" placeholder="Ultimo Nome" formControlName="lastName">
             <span class="mdl-textfield__error">Só pode conter caracteres</span>
           </div>
-          <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Registar</button>
+          <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action">Registar</button>
         </form>
       </div>
     </div>
@@ -52,4 +52,41 @@
     {{error}}
   </div>
   <button class="mdl-snackbar__action" type="button"></button>
+</div>
+
+<div class="dialog"  [class.dialog--active]="showSignUpSecondScreen">
+  <div class="back" (click)="showSignUpSecondScreen = false">
+    <i class="material-icons">arrow_back</i>
+    <span>Voltar ao inicio</span>
+  </div>
+  <div *ngFor="let achievement of achievementList; let i = index">
+    <div class="mdl-card mdl-shadow--2dp">
+      <div>
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">{{achievement.result.name}}</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          {{achievement.result.description}}
+        </div>
+      </div>
+      <button class="mdl-button mdl-js-button mdl-button--raised" [class.active]="achievement.done" (click)="changeAchievement(achievement, i)">
+        <div *ngIf="achievement.done" >
+          Concluido
+          <i class="material-icons">check</i>
+        </div>
+        <div *ngIf="!achievement.done" >
+          Por concluir
+          <i class="material-icons">close</i>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action" (click)="signUpSend()">
+    Concluir
+  </button>
+</div>
+
+<div class="loading" [class.loading--active]="loading">
+  <div class="mdl-spinner mdl-js-spinner is-active"></div>
 </div>
