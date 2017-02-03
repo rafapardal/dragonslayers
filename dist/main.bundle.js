@@ -1066,7 +1066,7 @@ module.exports = ".profile-header {\n  background-color: rgb(96,125,139);\n  pad
 /***/ 669:
 /***/ function(module, exports) {
 
-module.exports = "header{\n  min-height: 48px;\n}\n\n.mdl-cell {\n  margin: auto;\n}\n\n.mdl-js-textfield {\n  width: 100%;\n}\n\n.mdl-data-table {\n  width: 90%;\n  margin: 20px auto 0;\n}\n\n.mdl-button {\n  width: 100%;\n  margin: auto;\n}\n"
+module.exports = "header{\n  min-height: 48px;\n}\n\ntable {\n  overflow-x: visible;\n}\n\n.mdl-cell {\n  margin: auto;\n}\n\n.mdl-js-textfield {\n  width: 100%;\n}\n\n.mdl-data-table {\n  width: 90%;\n  margin: 20px auto 0;\n}\n\n.mdl-button {\n  width: 100%;\n  margin: auto;\n}\n"
 
 /***/ },
 
