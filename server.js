@@ -14,6 +14,7 @@ mongoose.connect('mongodb://Rafapardal:rafa1811994@ds141368.mlab.com:41368/drago
 const auth = require('./server/routes/auth');
 const feed = require('./server/routes/feed');
 const achievement = require('./server/routes/achievement');
+const group = require('./server/routes/group');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use('/api/auth', auth);
 app.use('/api/feed', feed);
 app.use('/api/achievement', achievement);
+app.use('/api/group', group);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {

@@ -1,0 +1,103 @@
+<!-- Simple header with scrollable tabs. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#scroll-tab-1" class="mdl-layout__tab is-active" (click)="getGroups()">Inserir Achievement</a>
+      <a href="#scroll-tab-2" class="mdl-layout__tab" (click)="getAchievementList()">Alterar Achievements</a>
+      <a href="#scroll-tab-3" class="mdl-layout__tab">Inserir Grupos</a>
+      <a href="#scroll-tab-4" class="mdl-layout__tab" (click)="getGroupList()">Alterar Grupos</a>
+    </div>
+  </header>
+  <main class="mdl-layout__content">
+    <section class="mdl-layout__tab-panel is-active" id="scroll-tab-1">
+      <div class="page-content">
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--8-col">
+            <form [formGroup]="achievement" (ngSubmit)="newAchievement()">
+              <div class="mdl-textfield mdl-js-textfield">
+                <input class="mdl-textfield__input" type="text" id="inputTitle" [(ngModel)]="achievementModel.title" placeholder="Titulo" formControlName="title">
+              </div>
+              <div class="mdl-textfield mdl-js-textfield">
+                <textarea class="mdl-textfield__input" type="text" rows= "8" id="inputDescription" [(ngModel)]="achievementModel.description" placeholder="Descrição" formControlName="description"></textarea>
+              </div>
+              <div class="mdl-textfield mdl-js-textfield">
+                <select class="mdl-textfield__input" id="inputGroup" [(ngModel)]="achievementModel.group" formControlName="group">
+                  <option *ngFor="let group of groupList" [value]="group._id">{{group.name}}</option>
+                </select>
+              </div>
+              <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action">Inserir</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mdl-layout__tab-panel" id="scroll-tab-2">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+          <div class="page-content">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th style="width: 10%">ID</th>
+                  <th style="width: 40%" class="mdl-data-table__cell--non-numeric">Nome</th>
+                  <th style="width: 40%" class="mdl-data-table__cell--non-numeric">Descrição</th>
+                  <th style="width: 10%" class="mdl-data-table__cell--non-numeric">Grupo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let achievement of achievementList" (click)="editAchievement(achievement)">
+                  <td>{{achievement._id}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{achievement.name}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{achievement.description}}</td>
+                  <td class="mdl-data-table__cell--non-numeric">{{achievement.group.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="scroll-tab-3">
+      <div class="page-content">
+        <div class="page-content">
+          <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--8-col">
+              <form [formGroup]="group" (ngSubmit)="newGroup()">
+                <div class="mdl-textfield mdl-js-textfield">
+                  <input class="mdl-textfield__input" type="text" id="inputName" placeholder="Nome" formControlName="name">
+                </div>
+                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action">Inserir</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="scroll-tab-4">
+      <div class="page-content">
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--12-col">
+            <div class="page-content">
+              <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                  <tr>
+                    <th style="width: 10%">ID</th>
+                    <th style="width: 90%" class="mdl-data-table__cell--non-numeric">Nome</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let group of groupList">
+                    <td>{{group._id}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{group.name}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

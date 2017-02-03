@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const achievement = require('../models/achievement');
+const group = require('../models/group');
 
 /* Get all achievements */
 router.get('/', (req, res) => {
-  achievement.getList( function(err, result ) {
+  group.getList( function(err, result ) {
     if (err) throw err;
     res.json(result);
   });
@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 
 /* New achievement */
 router.post('/new', (req, res) => {
-  achievement.new( req.body, function( err, result ) {
+  group.new( req.body, function( err, result ) {
     if (err) throw err;
     res.json(result);
   });

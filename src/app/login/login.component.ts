@@ -105,11 +105,12 @@ export class LoginComponent implements OnInit {
     this.auth.checkUsername(user.username).subscribe(usernameExists => {
       if (usernameExists == true){
         this.error = "Já existe este nome de utilizador";
-        this.displayErrors();
         return true;
       } else {
         this.signUpErrors(user);
       }
+    }, err => {}, () => {
+      this.displayErrors();
     });
   }
 

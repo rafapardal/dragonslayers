@@ -1,0 +1,21 @@
+header{
+  min-height: 48px;
+}
+
+.mdl-cell {
+  margin: auto;
+}
+
+.mdl-js-textfield {
+  width: 100%;
+}
+
+.mdl-data-table {
+  width: 90%;
+  margin: 20px auto 0;
+}
+
+.mdl-button {
+  width: 100%;
+  margin: auto;
+}

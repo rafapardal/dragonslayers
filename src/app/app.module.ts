@@ -18,6 +18,10 @@ import { AuthService } from './services/auth.service';
 import { FeedService } from './services/feed.service';
 import { AchievementsService } from './services/achievements.service';
 
+// Backend
+import { BackendComponent } from './backend/backend/backend.component';
+import { BackendService } from './backend/service/backend.service';
+
 
 // Routes
 const appRoutes: Routes = [
@@ -26,6 +30,10 @@ const appRoutes: Routes = [
     path: '',
     component: AppComponent,
     children: [
+      {
+        path: 'backend',
+        component: BackendComponent
+      },
       {
         path: 'login',
         component: LoginComponent
@@ -53,7 +61,8 @@ const appRoutes: Routes = [
     LoginComponent,
     FeedComponent,
     AchievementsComponent,
-    ProfileComponent
+    ProfileComponent,
+    BackendComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +74,7 @@ const appRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [AuthService, FeedService, AchievementsService],
+  providers: [AuthService, FeedService, AchievementsService,BackendService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
