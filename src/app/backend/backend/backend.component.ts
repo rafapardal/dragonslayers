@@ -11,53 +11,78 @@ import { Observable } from 'rxjs';
 export class BackendComponent implements AfterContentInit {
   private groupList;
   private achievementList;
+  private showEditScreenAchievements = false;
+  private showEditScreenGroups = false;
   private achievementModel = {
-    title: '',
+    id: '',
+    name: '',
     description: '',
     group: ''
+  };
+  private groupModel = {
+    id: '',
+    name: '',
   };
 
   // Achievements
   achievement = new FormGroup({
-      title: new FormControl(''),
+      id: new FormControl({value: '', disabled: true}),
+      name: new FormControl(''),
       description: new FormControl(''),
       group: new FormControl()
     });
 
   // Grupo
   group = new FormGroup({
+      id: new FormControl({value: '', disabled: true}),
       name: new FormControl('')
     });
 
   constructor(private backend: BackendService) { }
 
   ngAfterContentInit() {
+    this.cleanModels();
     this.getGroups();
+  }
+
+  init() {
+    this.cleanModels();
+    this.getGroups();
+  }
+
+  cleanModels() {
+    this.achievementModel.id = '';
+    this.achievementModel.name = '';
+    this.achievementModel.description = '';
+    this.achievementModel.group = '';
   }
 
   newAchievement() {
     let achievement = {
-      title: this.achievement.value.title,
+      name: this.achievement.value.name,
       description: this.achievement.value.description,
       group: this.achievement.value.group
     };
     this.backend.newAchievement(achievement).subscribe( result => {}, err => {}, () => {
-      this.achievementModel.title = '';
-      this.achievementModel.description = '';
+      this.cleanModels();
+      this.getGroups();
     });
   }
 
   newGroup() {
     let group = {
-      name: this.group.value.name
+      name: this.groupModel.name
     };
-    this.backend.newGroup(group).subscribe( result => {});
+    this.backend.newGroup(group).subscribe( result => {
+      this.groupModel.name = '';
+    });
   }
 
-  getGroups() {
+  getGroups(achievementGroup = null) {
     this.backend.getGroups().subscribe( result => {
       this.groupList = result;
-      this.achievementModel.group = result[0]._id;
+      if (achievementGroup) this.achievementModel.group = achievementGroup;
+      else this.achievementModel.group = result[0]._id;
     });
   }
 
@@ -74,7 +99,64 @@ export class BackendComponent implements AfterContentInit {
   }
 
   editAchievement(achievement) {
-    console.log(achievement);
+    if(achievement.editable == true) {
+      this.getGroups(achievement.group._id);
+      this.showEditScreenAchievements = true;
+      this.achievementModel.id = achievement._id;
+      this.achievementModel.name = achievement.name;
+      this.achievementModel.description = achievement.description;
+    } else {
+      alert("Impossivel alterar");
+    }
   }
 
+  achievementEdit() {
+    let achievement = {
+      id: this.achievementModel.id,
+      name: this.achievementModel.name,
+      description: this.achievementModel.description,
+      group: this.achievementModel.group
+    };
+    this.backend.editAchievement(achievement).subscribe( result => {
+      this.getAchievementList();
+      this.showEditScreenAchievements = false;
+    });
+  }
+
+  achievementDelete() {
+    let achievement = {
+      id: this.achievementModel.id,
+    };
+    this.backend.deleteAchievement(achievement.id).subscribe( result => {
+      this.getAchievementList();
+      this.showEditScreenAchievements = false;
+    });
+  }
+
+  editGroup(group){
+    this.showEditScreenGroups = true;
+    this.groupModel.id = group._id;
+    this.groupModel.name = group.name;
+  }
+
+  groupEdit() {
+    let group = {
+      id: this.groupModel.id,
+      name: this.groupModel.name,
+    };
+    this.backend.editGroup(group).subscribe( result => {
+      this.getGroupList();
+      this.showEditScreenGroups = false;
+    });
+  }
+
+  groupDelete() {
+    let group = {
+      id: this.groupModel.id,
+    };
+    this.backend.deleteGroup(group.id).subscribe( result => {
+      this.getGroupList();
+      this.showEditScreenGroups = false;
+    });
+  }
 }

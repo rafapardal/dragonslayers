@@ -22,6 +22,20 @@ export class BackendService {
      });
   }
 
+  public editAchievement(achievement) {
+    return this.http.put('/api/achievement/update', achievement)
+     .map((response: Response) => {
+       return response.json();
+     });
+  }
+
+  public deleteAchievement(achievementID) {
+    return this.http.delete('/api/achievement/delete', { search: 'id=' + achievementID })
+     .map((response: Response) => {
+       return response.json();
+     });
+  }
+
   public getGroups(){
     return this.http.get('/api/group')
      .map((response: Response) => {
@@ -30,7 +44,21 @@ export class BackendService {
   }
 
   public newGroup(group) {
-    return this.http.post('/api/group/new', group)
+    return this.http.post('/api/group/create', group)
+     .map((response: Response) => {
+       return response.json();
+     });
+  }
+
+  public editGroup(group) {
+    return this.http.put('/api/group/update', group)
+     .map((response: Response) => {
+       return response.json();
+     });
+  }
+
+  public deleteGroup(groupID) {
+    return this.http.delete('/api/group/delete', { search: 'id=' + groupID })
      .map((response: Response) => {
        return response.json();
      });

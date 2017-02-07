@@ -3,7 +3,7 @@
   <header class="mdl-layout__header">
     <!-- Tabs -->
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-      <a href="#scroll-tab-1" class="mdl-layout__tab is-active" (click)="getGroups()">Inserir Achievement</a>
+      <a href="#scroll-tab-1" class="mdl-layout__tab is-active" (click)="init()">Inserir Achievement</a>
       <a href="#scroll-tab-2" class="mdl-layout__tab" (click)="getAchievementList()">Alterar Achievements</a>
       <a href="#scroll-tab-3" class="mdl-layout__tab">Inserir Grupos</a>
       <a href="#scroll-tab-4" class="mdl-layout__tab" (click)="getGroupList()">Alterar Grupos</a>
@@ -16,7 +16,7 @@
           <div class="mdl-cell mdl-cell--8-col">
             <form [formGroup]="achievement" (ngSubmit)="newAchievement()">
               <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="inputTitle" [(ngModel)]="achievementModel.title" placeholder="Titulo" formControlName="title">
+                <input class="mdl-textfield__input" type="text" id="inputTitle" [(ngModel)]="achievementModel.name" placeholder="Titulo" formControlName="name">
               </div>
               <div class="mdl-textfield mdl-js-textfield">
                 <textarea class="mdl-textfield__input" type="text" rows= "8" id="inputDescription" [(ngModel)]="achievementModel.description" placeholder="Descrição" formControlName="description"></textarea>
@@ -66,7 +66,7 @@
             <div class="mdl-cell mdl-cell--8-col">
               <form [formGroup]="group" (ngSubmit)="newGroup()">
                 <div class="mdl-textfield mdl-js-textfield">
-                  <input class="mdl-textfield__input" type="text" id="inputName" placeholder="Nome" formControlName="name">
+                  <input class="mdl-textfield__input" type="text" id="inputName"  [(ngModel)]="groupModel.name"  placeholder="Nome" formControlName="name">
                 </div>
                 <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action">Inserir</button>
               </form>
@@ -88,7 +88,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let group of groupList">
+                  <tr *ngFor="let group of groupList" (click)="editGroup(group)">
                     <td>{{group._id}}</td>
                     <td class="mdl-data-table__cell--non-numeric">{{group.name}}</td>
                   </tr>
@@ -100,4 +100,65 @@
       </div>
     </section>
   </main>
+</div>
+
+
+<div class="dialog"  [class.dialog--active]="showEditScreenAchievements">
+  <div class="back" (click)="showEditScreenAchievements = false">
+    <i class="material-icons">arrow_back</i>
+    <span>Voltar</span>
+  </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--8-col">
+        <form [formGroup]="achievement">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="inputID" [(ngModel)]="achievementModel.id" placeholder="ID" formControlName="id">
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="inputTitle" [(ngModel)]="achievementModel.name" placeholder="Titulo" formControlName="name">
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <textarea class="mdl-textfield__input" type="text" rows= "8" id="inputDescription" [(ngModel)]="achievementModel.description" placeholder="Descrição" formControlName="description"></textarea>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <select class="mdl-textfield__input" id="inputGroup" [(ngModel)]="achievementModel.group" formControlName="group">
+              <option *ngFor="let group of groupList" [value]="group._id">{{group.name}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action" (click)="achievementEdit()">
+    atualizar achievement
+  </button>
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action" (click)="achievementDelete()">
+    Apagar Achievement
+  </button>
+</div>
+
+<div class="dialog"  [class.dialog--active]="showEditScreenGroups">
+  <div class="back" (click)="showEditScreenGroups = false">
+    <i class="material-icons">arrow_back</i>
+    <span>Voltar</span>
+  </div>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell--8-col">
+        <form [formGroup]="group">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="inputID" [(ngModel)]="groupModel.id" placeholder="ID" formControlName="id">
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="inputTitle" [(ngModel)]="groupModel.name" placeholder="Titulo" formControlName="name">
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action" (click)="groupEdit()">
+    atualizar Grupo
+  </button>
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action" (click)="groupDelete()">
+    Apagar Grupo
+  </button>
 </div>

@@ -8,12 +8,28 @@ exports.getList = function( callback ) {
   });
 }
 
-exports.new = function(achievement, callback ) {
+exports.create = function(achievement, callback ) {
   var newAchievement = new Achievement({
-    name: achievement.title,
+    name: achievement.name,
     description: achievement.description,
     group: achievement.group
   });
   newAchievement.save()
   callback(null, newAchievement);
+}
+
+exports.update = function(achievement, callback ) {
+  Achievement.findOne({ _id: achievement.id }, function(err, docs){
+    docs.name = achievement.name;
+    docs.description = achievement.description;
+    docs.group = achievement.group;
+    docs.save();
+    callback(null, docs);
+  });
+}
+
+exports.delete = function(achievementID, callback ) {
+  Achievement.remove({ _id: achievementID }, function(err, docs){
+    callback(null, 'apagado');
+  });
 }

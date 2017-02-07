@@ -244,6 +244,18 @@ var BackendService = (function () {
             return response.json();
         });
     };
+    BackendService.prototype.editAchievement = function (achievement) {
+        return this.http.put('/api/achievement/update', achievement)
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    BackendService.prototype.deleteAchievement = function (achievementID) {
+        return this.http.delete('/api/achievement/delete', { search: 'id=' + achievementID })
+            .map(function (response) {
+            return response.json();
+        });
+    };
     BackendService.prototype.getGroups = function () {
         return this.http.get('/api/group')
             .map(function (response) {
@@ -251,7 +263,19 @@ var BackendService = (function () {
         });
     };
     BackendService.prototype.newGroup = function (group) {
-        return this.http.post('/api/group/new', group)
+        return this.http.post('/api/group/create', group)
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    BackendService.prototype.editGroup = function (group) {
+        return this.http.put('/api/group/update', group)
+            .map(function (response) {
+            return response.json();
+        });
+    };
+    BackendService.prototype.deleteGroup = function (groupID) {
+        return this.http.delete('/api/group/delete', { search: 'id=' + groupID })
             .map(function (response) {
             return response.json();
         });
@@ -708,48 +732,75 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var BackendComponent = (function () {
     function BackendComponent(backend) {
         this.backend = backend;
+        this.showEditScreenAchievements = false;
+        this.showEditScreenGroups = false;
         this.achievementModel = {
-            title: '',
+            id: '',
+            name: '',
             description: '',
             group: ''
         };
+        this.groupModel = {
+            id: '',
+            name: '',
+        };
         // Achievements
         this.achievement = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormGroup */]({
-            title: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */](''),
+            id: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */]({ value: '', disabled: true }),
+            name: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */](''),
             description: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */](''),
             group: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */]()
         });
         // Grupo
         this.group = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormGroup */]({
+            id: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */]({ value: '', disabled: true }),
             name: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* FormControl */]('')
         });
     }
     BackendComponent.prototype.ngAfterContentInit = function () {
+        this.cleanModels();
         this.getGroups();
+    };
+    BackendComponent.prototype.init = function () {
+        this.cleanModels();
+        this.getGroups();
+    };
+    BackendComponent.prototype.cleanModels = function () {
+        this.achievementModel.id = '';
+        this.achievementModel.name = '';
+        this.achievementModel.description = '';
+        this.achievementModel.group = '';
     };
     BackendComponent.prototype.newAchievement = function () {
         var _this = this;
         var achievement = {
-            title: this.achievement.value.title,
+            name: this.achievement.value.name,
             description: this.achievement.value.description,
             group: this.achievement.value.group
         };
         this.backend.newAchievement(achievement).subscribe(function (result) { }, function (err) { }, function () {
-            _this.achievementModel.title = '';
-            _this.achievementModel.description = '';
+            _this.cleanModels();
+            _this.getGroups();
         });
     };
     BackendComponent.prototype.newGroup = function () {
-        var group = {
-            name: this.group.value.name
-        };
-        this.backend.newGroup(group).subscribe(function (result) { });
-    };
-    BackendComponent.prototype.getGroups = function () {
         var _this = this;
+        var group = {
+            name: this.groupModel.name
+        };
+        this.backend.newGroup(group).subscribe(function (result) {
+            _this.groupModel.name = '';
+        });
+    };
+    BackendComponent.prototype.getGroups = function (achievementGroup) {
+        var _this = this;
+        if (achievementGroup === void 0) { achievementGroup = null; }
         this.backend.getGroups().subscribe(function (result) {
             _this.groupList = result;
-            _this.achievementModel.group = result[0]._id;
+            if (achievementGroup)
+                _this.achievementModel.group = achievementGroup;
+            else
+                _this.achievementModel.group = result[0]._id;
         });
     };
     BackendComponent.prototype.getAchievementList = function () {
@@ -765,7 +816,65 @@ var BackendComponent = (function () {
         });
     };
     BackendComponent.prototype.editAchievement = function (achievement) {
-        console.log(achievement);
+        if (achievement.editable == true) {
+            this.getGroups(achievement.group._id);
+            this.showEditScreenAchievements = true;
+            this.achievementModel.id = achievement._id;
+            this.achievementModel.name = achievement.name;
+            this.achievementModel.description = achievement.description;
+        }
+        else {
+            alert("Impossivel alterar");
+        }
+    };
+    BackendComponent.prototype.achievementEdit = function () {
+        var _this = this;
+        var achievement = {
+            id: this.achievementModel.id,
+            name: this.achievementModel.name,
+            description: this.achievementModel.description,
+            group: this.achievementModel.group
+        };
+        this.backend.editAchievement(achievement).subscribe(function (result) {
+            _this.getAchievementList();
+            _this.showEditScreenAchievements = false;
+        });
+    };
+    BackendComponent.prototype.achievementDelete = function () {
+        var _this = this;
+        var achievement = {
+            id: this.achievementModel.id,
+        };
+        this.backend.deleteAchievement(achievement.id).subscribe(function (result) {
+            _this.getAchievementList();
+            _this.showEditScreenAchievements = false;
+        });
+    };
+    BackendComponent.prototype.editGroup = function (group) {
+        this.showEditScreenGroups = true;
+        this.groupModel.id = group._id;
+        this.groupModel.name = group.name;
+    };
+    BackendComponent.prototype.groupEdit = function () {
+        var _this = this;
+        var group = {
+            id: this.groupModel.id,
+            name: this.groupModel.name,
+        };
+        this.backend.editGroup(group).subscribe(function (result) {
+            _this.getGroupList();
+            _this.showEditScreenGroups = false;
+        });
+    };
+    BackendComponent.prototype.groupDelete = function () {
+        var _this = this;
+        var group = {
+            id: this.groupModel.id,
+        };
+        this.backend.deleteGroup(group.id).subscribe(function (result) {
+            _this.getGroupList();
+            _this.showEditScreenGroups = false;
+        });
     };
     BackendComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* Component */])({
@@ -1066,7 +1175,7 @@ module.exports = ".profile-header {\n  background-color: rgb(96,125,139);\n  pad
 /***/ 669:
 /***/ function(module, exports) {
 
-module.exports = "header{\n  min-height: 48px;\n}\n\ntable {\n  overflow-x: visible;\n}\n\n.mdl-cell {\n  margin: auto;\n}\n\n.mdl-js-textfield {\n  width: 100%;\n}\n\n.mdl-data-table {\n  width: 90%;\n  margin: 20px auto 0;\n}\n\n.mdl-button {\n  width: 100%;\n  margin: auto;\n}\n"
+module.exports = "header{\n  min-height: 48px;\n}\n\n@media (max-width: 679px){\n  .mdl-grid {\n    overflow-x: auto;\n  }\n}\n\n.mdl-cell {\n  margin: auto;\n}\n\n.mdl-js-textfield {\n  width: 100%;\n}\n\n.mdl-data-table {\n  width: 90%;\n  margin: 20px auto 0;\n}\n\n.mdl-button {\n  width: 100%;\n  margin: auto;\n}\n\n.dialog {\n  display: none;\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 10000;\n  background-color: #f9f9f9;\n}\n\n.dialog.dialog--active {\n  display: block;\n}\n\n.dialog .action {\n  width: 90%;\n  margin: 30px auto;\n  display: block;\n}\n\n.dialog .back {\n  display: block;\n  cursor: pointer;\n  width: 90%;\n  margin: 20px auto;\n  font-size: 24px;\n}\n"
 
 /***/ },
 
@@ -1115,7 +1224,7 @@ module.exports = "<div class=\"profile-header\" >\n  <img width=\"150px\" height
 /***/ 676:
 /***/ function(module, exports) {
 
-module.exports = "<!-- Simple header with scrollable tabs. -->\n<div class=\"mdl-layout mdl-js-layout mdl-layout--fixed-header\">\n  <header class=\"mdl-layout__header\">\n    <!-- Tabs -->\n    <div class=\"mdl-layout__tab-bar mdl-js-ripple-effect\">\n      <a href=\"#scroll-tab-1\" class=\"mdl-layout__tab is-active\" (click)=\"getGroups()\">Inserir Achievement</a>\n      <a href=\"#scroll-tab-2\" class=\"mdl-layout__tab\" (click)=\"getAchievementList()\">Alterar Achievements</a>\n      <a href=\"#scroll-tab-3\" class=\"mdl-layout__tab\">Inserir Grupos</a>\n      <a href=\"#scroll-tab-4\" class=\"mdl-layout__tab\" (click)=\"getGroupList()\">Alterar Grupos</a>\n    </div>\n  </header>\n  <main class=\"mdl-layout__content\">\n    <section class=\"mdl-layout__tab-panel is-active\" id=\"scroll-tab-1\">\n      <div class=\"page-content\">\n        <div class=\"mdl-grid\">\n          <div class=\"mdl-cell mdl-cell--8-col\">\n            <form [formGroup]=\"achievement\" (ngSubmit)=\"newAchievement()\">\n              <div class=\"mdl-textfield mdl-js-textfield\">\n                <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputTitle\" [(ngModel)]=\"achievementModel.title\" placeholder=\"Titulo\" formControlName=\"title\">\n              </div>\n              <div class=\"mdl-textfield mdl-js-textfield\">\n                <textarea class=\"mdl-textfield__input\" type=\"text\" rows= \"8\" id=\"inputDescription\" [(ngModel)]=\"achievementModel.description\" placeholder=\"Descrição\" formControlName=\"description\"></textarea>\n              </div>\n              <div class=\"mdl-textfield mdl-js-textfield\">\n                <select class=\"mdl-textfield__input\" id=\"inputGroup\" [(ngModel)]=\"achievementModel.group\" formControlName=\"group\">\n                  <option *ngFor=\"let group of groupList\" [value]=\"group._id\">{{group.name}}</option>\n                </select>\n              </div>\n              <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\">Inserir</button>\n            </form>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-2\">\n      <div class=\"mdl-grid\">\n        <div class=\"mdl-cell mdl-cell--12-col\">\n          <div class=\"page-content\">\n            <table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\">\n              <thead>\n                <tr>\n                  <th style=\"width: 10%\">ID</th>\n                  <th style=\"width: 40%\" class=\"mdl-data-table__cell--non-numeric\">Nome</th>\n                  <th style=\"width: 40%\" class=\"mdl-data-table__cell--non-numeric\">Descrição</th>\n                  <th style=\"width: 10%\" class=\"mdl-data-table__cell--non-numeric\">Grupo</th>\n                </tr>\n              </thead>\n              <tbody>\n                <tr *ngFor=\"let achievement of achievementList\" (click)=\"editAchievement(achievement)\">\n                  <td>{{achievement._id}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{achievement.name}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{achievement.description}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{achievement.group.name}}</td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n    </section>\n    <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-3\">\n      <div class=\"page-content\">\n        <div class=\"page-content\">\n          <div class=\"mdl-grid\">\n            <div class=\"mdl-cell mdl-cell--8-col\">\n              <form [formGroup]=\"group\" (ngSubmit)=\"newGroup()\">\n                <div class=\"mdl-textfield mdl-js-textfield\">\n                  <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputName\" placeholder=\"Nome\" formControlName=\"name\">\n                </div>\n                <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\">Inserir</button>\n              </form>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n    <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-4\">\n      <div class=\"page-content\">\n        <div class=\"mdl-grid\">\n          <div class=\"mdl-cell mdl-cell--12-col\">\n            <div class=\"page-content\">\n              <table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\">\n                <thead>\n                  <tr>\n                    <th style=\"width: 10%\">ID</th>\n                    <th style=\"width: 90%\" class=\"mdl-data-table__cell--non-numeric\">Nome</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let group of groupList\">\n                    <td>{{group._id}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{group.name}}</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n  </main>\n</div>\n"
+module.exports = "<!-- Simple header with scrollable tabs. -->\n<div class=\"mdl-layout mdl-js-layout mdl-layout--fixed-header\">\n  <header class=\"mdl-layout__header\">\n    <!-- Tabs -->\n    <div class=\"mdl-layout__tab-bar mdl-js-ripple-effect\">\n      <a href=\"#scroll-tab-1\" class=\"mdl-layout__tab is-active\" (click)=\"init()\">Inserir Achievement</a>\n      <a href=\"#scroll-tab-2\" class=\"mdl-layout__tab\" (click)=\"getAchievementList()\">Alterar Achievements</a>\n      <a href=\"#scroll-tab-3\" class=\"mdl-layout__tab\">Inserir Grupos</a>\n      <a href=\"#scroll-tab-4\" class=\"mdl-layout__tab\" (click)=\"getGroupList()\">Alterar Grupos</a>\n    </div>\n  </header>\n  <main class=\"mdl-layout__content\">\n    <section class=\"mdl-layout__tab-panel is-active\" id=\"scroll-tab-1\">\n      <div class=\"page-content\">\n        <div class=\"mdl-grid\">\n          <div class=\"mdl-cell mdl-cell--8-col\">\n            <form [formGroup]=\"achievement\" (ngSubmit)=\"newAchievement()\">\n              <div class=\"mdl-textfield mdl-js-textfield\">\n                <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputTitle\" [(ngModel)]=\"achievementModel.name\" placeholder=\"Titulo\" formControlName=\"name\">\n              </div>\n              <div class=\"mdl-textfield mdl-js-textfield\">\n                <textarea class=\"mdl-textfield__input\" type=\"text\" rows= \"8\" id=\"inputDescription\" [(ngModel)]=\"achievementModel.description\" placeholder=\"Descrição\" formControlName=\"description\"></textarea>\n              </div>\n              <div class=\"mdl-textfield mdl-js-textfield\">\n                <select class=\"mdl-textfield__input\" id=\"inputGroup\" [(ngModel)]=\"achievementModel.group\" formControlName=\"group\">\n                  <option *ngFor=\"let group of groupList\" [value]=\"group._id\">{{group.name}}</option>\n                </select>\n              </div>\n              <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\">Inserir</button>\n            </form>\n          </div>\n        </div>\n      </div>\n    </section>\n\n    <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-2\">\n      <div class=\"mdl-grid\">\n        <div class=\"mdl-cell mdl-cell--12-col\">\n          <div class=\"page-content\">\n            <table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\">\n              <thead>\n                <tr>\n                  <th style=\"width: 10%\">ID</th>\n                  <th style=\"width: 40%\" class=\"mdl-data-table__cell--non-numeric\">Nome</th>\n                  <th style=\"width: 40%\" class=\"mdl-data-table__cell--non-numeric\">Descrição</th>\n                  <th style=\"width: 10%\" class=\"mdl-data-table__cell--non-numeric\">Grupo</th>\n                </tr>\n              </thead>\n              <tbody>\n                <tr *ngFor=\"let achievement of achievementList\" (click)=\"editAchievement(achievement)\">\n                  <td>{{achievement._id}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{achievement.name}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{achievement.description}}</td>\n                  <td class=\"mdl-data-table__cell--non-numeric\">{{achievement.group.name}}</td>\n                </tr>\n              </tbody>\n            </table>\n          </div>\n        </div>\n      </div>\n    </section>\n    <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-3\">\n      <div class=\"page-content\">\n        <div class=\"page-content\">\n          <div class=\"mdl-grid\">\n            <div class=\"mdl-cell mdl-cell--8-col\">\n              <form [formGroup]=\"group\" (ngSubmit)=\"newGroup()\">\n                <div class=\"mdl-textfield mdl-js-textfield\">\n                  <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputName\"  [(ngModel)]=\"groupModel.name\"  placeholder=\"Nome\" formControlName=\"name\">\n                </div>\n                <button type=\"submit\" class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\">Inserir</button>\n              </form>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n    <section class=\"mdl-layout__tab-panel\" id=\"scroll-tab-4\">\n      <div class=\"page-content\">\n        <div class=\"mdl-grid\">\n          <div class=\"mdl-cell mdl-cell--12-col\">\n            <div class=\"page-content\">\n              <table class=\"mdl-data-table mdl-js-data-table mdl-shadow--2dp\">\n                <thead>\n                  <tr>\n                    <th style=\"width: 10%\">ID</th>\n                    <th style=\"width: 90%\" class=\"mdl-data-table__cell--non-numeric\">Nome</th>\n                  </tr>\n                </thead>\n                <tbody>\n                  <tr *ngFor=\"let group of groupList\" (click)=\"editGroup(group)\">\n                    <td>{{group._id}}</td>\n                    <td class=\"mdl-data-table__cell--non-numeric\">{{group.name}}</td>\n                  </tr>\n                </tbody>\n              </table>\n            </div>\n          </div>\n        </div>\n      </div>\n    </section>\n  </main>\n</div>\n\n\n<div class=\"dialog\"  [class.dialog--active]=\"showEditScreenAchievements\">\n  <div class=\"back\" (click)=\"showEditScreenAchievements = false\">\n    <i class=\"material-icons\">arrow_back</i>\n    <span>Voltar</span>\n  </div>\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"achievement\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputID\" [(ngModel)]=\"achievementModel.id\" placeholder=\"ID\" formControlName=\"id\">\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputTitle\" [(ngModel)]=\"achievementModel.name\" placeholder=\"Titulo\" formControlName=\"name\">\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <textarea class=\"mdl-textfield__input\" type=\"text\" rows= \"8\" id=\"inputDescription\" [(ngModel)]=\"achievementModel.description\" placeholder=\"Descrição\" formControlName=\"description\"></textarea>\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <select class=\"mdl-textfield__input\" id=\"inputGroup\" [(ngModel)]=\"achievementModel.group\" formControlName=\"group\">\n              <option *ngFor=\"let group of groupList\" [value]=\"group._id\">{{group.name}}</option>\n            </select>\n          </div>\n        </form>\n      </div>\n    </div>\n\n  <button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\" (click)=\"achievementEdit()\">\n    atualizar achievement\n  </button>\n  <button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\" (click)=\"achievementDelete()\">\n    Apagar Achievement\n  </button>\n</div>\n\n<div class=\"dialog\"  [class.dialog--active]=\"showEditScreenGroups\">\n  <div class=\"back\" (click)=\"showEditScreenGroups = false\">\n    <i class=\"material-icons\">arrow_back</i>\n    <span>Voltar</span>\n  </div>\n    <div class=\"mdl-grid\">\n      <div class=\"mdl-cell mdl-cell--8-col\">\n        <form [formGroup]=\"group\">\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputID\" [(ngModel)]=\"groupModel.id\" placeholder=\"ID\" formControlName=\"id\">\n          </div>\n          <div class=\"mdl-textfield mdl-js-textfield\">\n            <input class=\"mdl-textfield__input\" type=\"text\" id=\"inputTitle\" [(ngModel)]=\"groupModel.name\" placeholder=\"Titulo\" formControlName=\"name\">\n          </div>\n        </form>\n      </div>\n    </div>\n\n  <button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\" (click)=\"groupEdit()\">\n    atualizar Grupo\n  </button>\n  <button class=\"mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent action\" (click)=\"groupDelete()\">\n    Apagar Grupo\n  </button>\n</div>\n"
 
 /***/ },
 

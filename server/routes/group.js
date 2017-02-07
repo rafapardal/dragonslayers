@@ -10,9 +10,25 @@ router.get('/', (req, res) => {
   });
 });
 
-/* New achievement */
-router.post('/new', (req, res) => {
-  group.new( req.body, function( err, result ) {
+/* New group */
+router.post('/create', (req, res) => {
+  group.create( req.body, function( err, result ) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+/* Update group */
+router.put('/update', (req, res) => {
+  group.update( req.body, function( err, result ) {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+/* Delete group */
+router.delete('/delete', (req, res) => {
+  group.delete( req.query.id, function( err, result ) {
     if (err) throw err;
     res.json(result);
   });
